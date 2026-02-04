@@ -96,8 +96,10 @@ def write_report_model_comparison(
     # report.md
     features_md = "\n".join(f"- {f}" for f in features)
 
-    # Build model sections
+    # Build simple comparison table and model sections
     model_sections = []
+    table_rows = []
+    
     for model_name, metric_dict in results.items():
         holdout_metrics = metric_dict["holdout"]
         holdout_acc = holdout_metrics["accuracy"]
@@ -109,6 +111,11 @@ def write_report_model_comparison(
         cv_f1_std = cv_metrics["f1_score"]["std"]
         cv_roc_auc_mean = cv_metrics["roc_auc"]["mean"]
         cv_roc_auc_std = cv_metrics["roc_auc"]["std"]
+        
+        # Add row to table
+        table_rows.append(
+            f"| {model_name.upper()} | {holdout_acc:.4f} | {holdout_f1:.4f} | {holdout_roc_auc:.4f} | {cv_f1_mean:.4f} |"
+        )
 
         # Build individual model section
         model_section = f"""
@@ -129,6 +136,11 @@ def write_report_model_comparison(
 - **ROC AUC Score:** Mean = `{cv_roc_auc_mean:.4f}`, Std = `{cv_roc_auc_std:.4f}`
 """
         model_sections.append(model_section)
+    
+    # Simple comparison table
+    comparison_table = """| Model | Accuracy | F1 Score | ROC AUC | CV F1 |
+|--------|----------|----------|---------|-------|
+""" + "\n".join(table_rows)
 
     report = textwrap.dedent(
         f"""\
@@ -152,7 +164,11 @@ def write_report_model_comparison(
     - SimpleImputer (median for numerical, most_frequent for categorical)
     - OneHotEncoder (handle_unknown='ignore')
 
-## Results
+##  Table Comparison of Metrics
+
+{comparison_table}
+
+##  Detailed Results
 {"".join(model_sections)}
 """
     )
