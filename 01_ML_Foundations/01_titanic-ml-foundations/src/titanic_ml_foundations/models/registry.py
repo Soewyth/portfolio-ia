@@ -8,7 +8,7 @@ from titanic_ml_foundations.features.preprocess import build_preprocessor
 from titanic_ml_foundations.config import RANDOM_STATE, MAX_ITER_LOGREG, N_ESTIMATORS_RF
 
 
-def make_model_registry() -> dict[str, str]:
+def make_model_registry() -> dict[str, Pipeline]:
     """Create a registry of available models.
     Args:
         None
@@ -16,7 +16,6 @@ def make_model_registry() -> dict[str, str]:
     Returns:
         dict[str, str]: A dictionary mapping model names to their module paths.
     """
-    preprocess = build_preprocessor()
     logreg = LogisticRegression(random_state=RANDOM_STATE, max_iter=MAX_ITER_LOGREG)
     rf = RandomForestClassifier(
         random_state=RANDOM_STATE, n_estimators=N_ESTIMATORS_RF, n_jobs=-1
@@ -24,7 +23,7 @@ def make_model_registry() -> dict[str, str]:
 
     return {
         "logreg": Pipeline(
-            steps=[("preprocessor", preprocess), ("classifier", logreg)]
+            steps=[("preprocess", build_preprocessor()), ("model", logreg)]
         ),
-        "rf": Pipeline(steps=[("preprocessor", preprocess), ("classifier", rf)]),
+        "rf": Pipeline(steps=[("preprocess", build_preprocessor()), ("model", rf)]),
     }
