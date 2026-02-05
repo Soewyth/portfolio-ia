@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from datetime import datetime
 
+from sklearn.base import clone
 from sklearn.metrics import accuracy_score, f1_score, roc_auc_score, confusion_matrix
 from sklearn.model_selection import StratifiedKFold
 
@@ -59,7 +60,6 @@ def main() -> None:
     run_tag = f"rs{RANDOM_STATE}_ts{ts_pct}_cv{N_SPLITS_CV}"
 
     # Define report paths
-    cm_path = figures_path / f"confusion_matrix_{run_tag}.png"
     report_md_path = reports_path / f"comparison_report_{run_tag}.md"
     json_path = reports_path / f"metrics_{run_tag}_{run_time_str}.json"
 
@@ -79,7 +79,8 @@ def main() -> None:
     results: dict[str, dict] = {}
 
     for model_name, model_pipeline in registry.items():
-
+        # define path for confusion matrix
+        cm_path = figures_path / f"confusion_matrix_{model_name}_{run_tag}.png"
         # fit model
         model_pipeline.fit(X_train, y_train)
 
@@ -94,20 +95,21 @@ def main() -> None:
         holdout_cm = confusion_matrix(y_valid, y_predict)
 
         # ========== cross-validation (unfitted pipe and full data) ==========
-        cv_f1_mean, cv_f1_std = cross_validate_model(
-            model=make_model_registry()[model_name],
+        scores = cross_validate_model(
+            model=clone(model_pipeline),
             X=X,
             y=y,
             cv=cv,
-            scoring="f1",
+            scoring=["f1", "roc_auc"],
         )
-        cv_roc_auc_mean, cv_roc_auc_std = cross_validate_model(
-            model=make_model_registry()[model_name],
-            X=X,
-            y=y,
-            cv=cv,
-            scoring="roc_auc",
-        )
+        print("score", scores)
+        print("scores.items()", scores.items())
+        print("scores.keys()", scores.keys())
+
+        cv_f1_mean = scores["f1"]["mean"]
+        cv_f1_std = scores["f1"]["std"]
+        cv_roc_auc_mean = scores["roc_auc"]["mean"]
+        cv_roc_auc_std = scores["roc_auc"]["std"]
         # results
         results[model_name] = {
             "holdout": {
@@ -128,7 +130,7 @@ def main() -> None:
             },
         }
     # ========== artifacts saving ==========
-    save_confusion_matrix(holdout_cm, cm_path)
+        save_confusion_matrix(holdout_cm, cm_path)
     write_report_model_comparison(
         report_path=report_md_path,
         run_time=run_time,
@@ -138,15 +140,13 @@ def main() -> None:
         results=results,
     )
     # json report payload
-    payload = (
-        {
-            "run_time": run_time_str,
-            "random_state": RANDOM_STATE,
-            "test_size": TEST_SIZE,
-            "features": list(X.columns),
-            "models": results,
-        }
-    )
+    payload = {
+        "run_time": run_time_str,
+        "random_state": RANDOM_STATE,
+        "test_size": TEST_SIZE,
+        "features": list(X.columns),
+        "models": results,
+    }
     # save json report
     save_report_json(json_path, payload)
 
