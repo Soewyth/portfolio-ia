@@ -114,7 +114,7 @@ def write_report_model_comparison(
         
         # Add row to table
         table_rows.append(
-            f"| {model_name.upper()} | {holdout_acc:.4f} | {holdout_f1:.4f} | {holdout_roc_auc:.4f} | {cv_f1_mean:.4f} |"
+            f"| {model_name.upper()} | {holdout_acc:.4f} | {holdout_f1:.4f} | {holdout_roc_auc:.4f} | {cv_f1_mean:.4f} | {cv_f1_std:.4f} | {cv_roc_auc_mean:.4f} | {cv_roc_auc_std:.4f} |"
         )
 
         # Build individual model section
@@ -138,8 +138,8 @@ def write_report_model_comparison(
         model_sections.append(model_section)
     
     # Simple comparison table
-    comparison_table = """| Model | Accuracy | F1 Score | ROC AUC | CV F1 |
-|--------|----------|----------|---------|-------|
+    comparison_table = """| Model | Accuracy | F1 Score | ROC AUC | CV F1 | CV F1 Mean | CV F1 Std | CV ROC AUC Mean | CV ROC AUC Std |
+|--------|----------|----------|---------|-------|-------|-------|-------|-------|
 """ + "\n".join(table_rows)
 
     report = textwrap.dedent(

@@ -1,68 +1,44 @@
-# Titanic — ML Foundations (Kaggle)
+# Titanic — ML Foundations (Classification)
 
-## Objective
+classification pipeline reproducible(Scikit-Learn) with preprocessing (imputation + one-hot), holdout evaluation + cross-validation, comparison models,and versionnings artifacts (`metrics.json`, reports `.md`, figures `.png`).
 
-Build a clean and reproducible Machine Learning pipeline to predict passenger survival on the Titanic dataset (binary classification).
+## Project goals
 
----
+- Build a clean, reusable ML pipeline (preprocess + model)
+- Evaluate properly: holdout split + Stratified CV
+- Compare at least two models (LogReg vs RandomForest)
+- Produce human-readable + machine-readable outputs (MD + JSON)
 
-## Dataset
+## Tech stack
 
-- Source: Kaggle — _Titanic: Machine Learning from Disaster_
-- Expected files (not committed to git):
-  - `datasets/raw/train.csv`
-  - `datasets/raw/test.csv`
-  - (optional) `datasets/raw/gender_submission.csv`
+- Python
+- Pandas
+- Scikit-Learn
+- Matplotlib (confusion matrix)
 
-### Download (Kaggle CLI)
+## Repository structure (simplified)
 
-```bash
-kaggle competitions download -c titanic -p datasets/raw
-unzip -o datasets/raw/titanic.zip -d datasets/raw
+```text
+src/titanic_ml_foundations/
+  data/            # load + split
+  features/        # schema + preprocess (ColumnTransformer)
+  models/          # baseline + registry
+  evaluation/      # cv + plots + reporting
+scripts/
+  01_baseline_logreg.py
+  02_model_comparison.py
+outputs/
+  figures/
+  reports/
+datasets/
+  raw/
+    train.csv
+    test.csv
 ```
 
-### Metrics
+## Setup
 
-Baseline evaluation focuses on:
-
-- Accuracy
-- F1-score
-- ROC-AUC
-
-### Approach
-
-- Data loading through a dedicated module: titanic_ml_foundations.data
-- Feature selection through: titanic_ml_foundations.features
-- Baseline model: Logistic Regression (first benchmark)
-- Next steps (planned):
-  - Proper preprocessing with ColumnTransformer + Pipeline
-  - Stratified cross-validation
-  - Confusion matrix + ROC curve saved in outputs/figures/
-  - Short evaluation report saved in outputs/reports/
-
-### Project Structure
-
-```01_titanic-ml-foundations/
-├── datasets/
-│   └── raw/                 # Kaggle CSV files (ignored by git)
-├── outputs/
-│   ├── figures/             # plots (can be committed)
-│   └── reports/             # reports/metrics
-├── scripts/                 # runnable entry points
-├── src/
-│   └── titanic_ml_foundations/
-│       ├── data/            # load + checks
-│       ├── features/        # feature selection / preprocessing
-│       ├── models/          # baseline models / pipelines
-│       └── evaluation/      # metrics + plots
-├── pyproject.toml
-├── requirements.txt
-└── README.md
-```
-
-### How to Run
-
-1. Create and activate environment
+### 1) Create venv + install
 
 ```bash
 python -m venv .venv
@@ -70,18 +46,56 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-2. Install the project (editable)
+### 2) (Recommended) install as editable
+
+From project root:
 
 ```bash
-   pip install -e .
+pip install -e .
 ```
 
-3. Run baseline script
+## How to run
+
+### Baseline (Logistic Regression)
+
+Runs holdout evaluation + CV, saves confusion matrix + report + metrics JSON.
 
 ```bash
-   python scripts/01_baseline_logreg.py
+python scripts/01_baseline_logreg.py
 ```
 
-# Notes
+Outputs (examples):
 
-Kaggle datasets are not committed. Download them and place them under datasets/raw/.
+- `outputs/figures/confusion_matrix_*.png`
+- `outputs/reports/baseline_report_*.md`
+- `outputs/reports/metrics_*.json`
+
+### Model comparison (LogReg vs RandomForest)
+
+Compares multiple models using the same preprocessing and evaluation protocol.
+
+```bash
+python scripts/02_model_comparison.py
+```
+
+Outputs:
+
+- `outputs/figures/confusion_matrix_<model>_*.png`
+- `outputs/reports/comparison_report_*.md`
+- `outputs/reports/metrics_*.json`
+
+## Evaluation protocol
+
+- Holdout: stratified train/valid split (`TEST_SIZE`, `RANDOM_STATE`)
+- Cross-validation: `StratifiedKFold` (`N_SPLITS_CV`, `shuffle=True`, `RANDOM_STATE`)
+
+Metrics:
+
+- Holdout: Accuracy / F1 / ROC-AUC + confusion matrix
+- CV: mean ± std for F1 and ROC-AUC
+
+## Notes
+
+- Kaggle `test.csv` has no labels (`y`), so metrics are computed only on `train.csv`.
+- JSON metrics are machine-readable and facilitate run/model comparison.
+- Datasets from Kaggle are not committed; place files in `datasets/raw/`.

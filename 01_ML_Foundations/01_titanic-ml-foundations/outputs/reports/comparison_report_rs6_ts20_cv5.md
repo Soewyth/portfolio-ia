@@ -1,5 +1,5 @@
 # Titanic Model Comparison Report
-**Run Time:** 2026-02-04 21:19:08
+**Run Time:** 2026-03-02 13:57:50
 
 ## Configuration
 - **Random State:** `6`
@@ -24,7 +24,14 @@
     - SimpleImputer (median for numerical, most_frequent for categorical)
     - OneHotEncoder (handle_unknown='ignore')
 
-## Results
+##  Table Comparison of Metrics
+
+| Model | Accuracy | F1 Score | ROC AUC | CV F1 | CV F1 Mean | CV F1 Std | CV ROC AUC Mean | CV ROC AUC Std |
+|--------|----------|----------|---------|-------|-------|-------|-------|-------|
+| LOGREG | 0.7933 | 0.7132 | 0.8310 | 0.7168 | 0.0419 | 0.8508 | 0.0318 |
+| RF | 0.8045 | 0.7368 | 0.8437 | 0.7419 | 0.0521 | 0.8573 | 0.0198 |
+
+##  Detailed Results
 
 ## LOGREG
 

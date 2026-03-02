@@ -36,7 +36,7 @@ from titanic_ml_foundations.evaluation.reporting import write_report_model_compa
 
 
 def main() -> None:
-    """Main function to execute the baseline logistic regression model training"""
+    """Train and compare multiple models on Titanic data."""
 
     scripts_dir = Path(__file__).resolve().parent  #  scripts directory
     root_dir = scripts_dir.parent  # root directory
@@ -64,7 +64,7 @@ def main() -> None:
     json_path = reports_path / f"metrics_{run_tag}_{run_time_str}.json"
 
     # ========== data ==========
-    train_df, test_df = load_train_test(root_dir)
+    train_df, _ = load_train_test(root_dir)
     X, y = make_X_y(train_df)
 
     # ========== split fixed ==========
@@ -102,9 +102,6 @@ def main() -> None:
             cv=cv,
             scoring=["f1", "roc_auc"],
         )
-        print("score", scores)
-        print("scores.items()", scores.items())
-        print("scores.keys()", scores.keys())
 
         cv_f1_mean = scores["f1"]["mean"]
         cv_f1_std = scores["f1"]["std"]
@@ -159,9 +156,13 @@ def main() -> None:
         print(f"Holdout F1 Score: {holdout_metrics['f1_score']}")
         print(f"Holdout ROC AUC: {holdout_metrics['roc_auc']}")
 
-    print(
-        f"\n============ Saved : {cm_path} | {report_md_path} | {json_path}  ============== "
-    )
+    print(f"\n============ Saved reports ============")
+    print(f"Markdown report: {report_md_path}")
+    print(f"JSON metrics: {json_path}")
+    print("Confusion matrices:")
+    for model_name in results:
+        model_cm_path = figures_path / f"confusion_matrix_{model_name}_{run_tag}.png"
+        print(f"- {model_name}: {model_cm_path}")
 
 
 if __name__ == "__main__":

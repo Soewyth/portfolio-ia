@@ -92,14 +92,14 @@ def main() -> None:
 
     # F1 Score
     cv_model_f1 = build_baseline_model()  # new pipeline for cross-validation
-    mean_cv_score_f1, std_cv_score_f1 = cross_validate_model(
-        cv_model_f1, X, y, cv=cv, scoring="f1"
-    )
+    cv_scores_f1 = cross_validate_model(cv_model_f1, X, y, cv=cv, scoring="f1")
+    mean_cv_score_f1 = cv_scores_f1["f1"]["mean"]
+    std_cv_score_f1 = cv_scores_f1["f1"]["std"]
     # ROC AUC Score
     cv_model_auc = build_baseline_model()  # new pipeline for cross-validation
-    mean_cv_score_auc, std_cv_score_auc = cross_validate_model(
-        cv_model_auc, X, y, cv=cv, scoring="roc_auc"
-    )
+    cv_scores_auc = cross_validate_model(cv_model_auc, X, y, cv=cv, scoring="roc_auc")
+    mean_cv_score_auc = cv_scores_auc["roc_auc"]["mean"]
+    std_cv_score_auc = cv_scores_auc["roc_auc"]["std"]
 
     # ========== artifacts saving ==========
     save_confusion_matrix(cm, cm_path)
