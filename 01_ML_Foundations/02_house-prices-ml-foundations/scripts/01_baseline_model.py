@@ -11,6 +11,11 @@ from house_prices_ml_foundations.features.preprocess import build_preprocessor
 
 # config imports
 from house_prices_ml_foundations.config import TEST_SIZE, RANDOM_STATE
+from house_prices_ml_foundations.features.schema import (
+    NUMERICAL_FEATURES,
+    CATEGORICAL_FEATURES,
+    ORDINAL_FEATURES,
+)
 
 
 SCRIPTS_DIR = Path(__file__).resolve().parent  #  scripts directory
@@ -42,6 +47,18 @@ def main():
         f" y mean in train set : {y_train.mean():.3f} and in validation set : {y_valid.mean():.3f}"
     )
     preprocessor = build_preprocessor()
+    X_train = preprocessor.fit_transform(X_train)
+    X_valid = preprocessor.transform(X_valid)
+    print(
+        f"Data shape after preprocessing -> X_train : {X_train.shape}, X_valid : {X_valid.shape}"
+    )
+    print(
+        f"Length of numerical features: {len(preprocessor['num'].get_feature_names_out())}, \n"
+        f"Length of categorical features: {len(preprocessor['cat'].get_feature_names_out())}, \n"
+        f"Length of ordinal features: {len(preprocessor['ord'].get_feature_names_out())}"
+    )
+
+    print("type ", type(X_train), type(X_valid))
 
 
 if __name__ == "__main__":
