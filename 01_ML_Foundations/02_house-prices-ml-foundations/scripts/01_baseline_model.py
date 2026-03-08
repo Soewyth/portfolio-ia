@@ -5,8 +5,9 @@ import pandas as pd
 # ============== IMPORTS FROM house_prices_ml_foundations ==============
 # data imports
 from house_prices_ml_foundations.data.load import load_train_test
-from house_prices_ml_foundations.features.build import make_X_y
-from house_prices_ml_foundations.data.split import split_data
+from house_prices_ml_foundations.features.build import make_features
+from house_prices_ml_foundations.data.split import make_train_valid_split
+from house_prices_ml_foundations.features.preprocess import build_preprocessor
 
 # config imports
 from house_prices_ml_foundations.config import TEST_SIZE, RANDOM_STATE
@@ -27,10 +28,20 @@ def main():
     train_df, test_df = load_train_test(ROOT_DIR)
     # Prepare features and target
     print("=== Preparing features and target ===")
-    X, y = make_X_y(train_df)
-    # Split data into training and testing sets
-    print("=== Splitting data into training and testing sets ===")
-    X_train, X_test, y_train, y_test = split_data(X, y, test_size, random_state)
+    X, y = make_features(train_df)
+    # Split data into training and validation sets
+    print("=== Splitting data into training and validation sets ===")
+    X_train, X_valid, y_train, y_valid = make_train_valid_split(
+        X, y, test_size, random_state
+    )
+
+    print(
+        f"Data shape after split -> X_train : {X_train.shape}, X_valid : {X_valid.shape}, y_train : {y_train.shape}, y_valid : {y_valid.shape}"
+    )
+    print(
+        f" y mean in train set : {y_train.mean():.3f} and in validation set : {y_valid.mean():.3f}"
+    )
+    preprocessor = build_preprocessor()
 
 
 if __name__ == "__main__":

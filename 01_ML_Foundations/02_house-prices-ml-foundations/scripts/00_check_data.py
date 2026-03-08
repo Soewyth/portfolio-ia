@@ -6,7 +6,7 @@ import pandas as pd
 # data imports
 from house_prices_ml_foundations.data.load import load_train_test
 from house_prices_ml_foundations.features.schema import FEATURES_COLS, TARGET_COL
-from house_prices_ml_foundations.features.build import make_X_y
+from house_prices_ml_foundations.features.build import make_features
 
 SCRIPTS_DIR = Path(__file__).resolve().parent  #  scripts directory
 ROOT_DIR = SCRIPTS_DIR.parent  # root directory
@@ -34,7 +34,7 @@ def explore_data(train_df: pd.DataFrame, test_df: pd.DataFrame) -> None:
 
 if __name__ == "__main__":
     train_df, test_df = load_train_test(ROOT_DIR)
-    X, y = make_X_y(train_df)
+    X, y = make_features(train_df)
     print("\n--- Features (X) shape ---")
     print(X.shape)
     print("\n--- Target (y) shape ---")
@@ -42,3 +42,14 @@ if __name__ == "__main__":
     print("Sale price false in X columns:", "SalePrice" in X.columns)
     print("\n--- Target (y) description ---")
     print(y.describe())
+
+
+    print("\n--- List of all features ---")
+    print(X.dtypes)
+    print("\n--- List of object features ---")
+    object_features = X.select_dtypes(include=["object"]).columns.tolist()
+    print(object_features)
+
+    print("\n--- List of numbers features ---")
+    numbers_features = X.select_dtypes(include=["number", "float64", "int64"]).columns.tolist()
+    print(numbers_features)

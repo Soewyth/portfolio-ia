@@ -14,8 +14,12 @@ def get_target_name() -> str:
     return TARGET_COL
 
 
-def make_X_y(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
+def make_features(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
     """Given a DataFrame, return the features DataFrame X and target Series y."""
+    df = df.copy()  # avoid modifying 
+    df["house_age"] = df["YrSold"] - df["YearBuilt"]  # new feature: age of the house at the time of sale
+    df["garage_age"] = df["YrSold"] - df["GarageYrBlt"]  # new feature: age of the garage at the time of sale
+    df["remod_age"] = df["YrSold"] - df["YearRemodAdd"]  # new feature: age since last remodel at the time of sale
     X = df[FEATURES_COLS]
     y = df[TARGET_COL]
     print(f"Features shape : {X.shape} and target shape : {y.shape}")
