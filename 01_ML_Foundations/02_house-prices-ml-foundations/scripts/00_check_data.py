@@ -1,0 +1,44 @@
+from __future__ import annotations  # for future compatibility
+from pathlib import Path
+import pandas as pd
+
+# ============== IMPORTS FROM house_prices_ml_foundations ==============
+# data imports
+from house_prices_ml_foundations.data.load import load_train_test
+from house_prices_ml_foundations.features.schema import FEATURES_COLS, TARGET_COL
+from house_prices_ml_foundations.features.build import make_X_y
+
+SCRIPTS_DIR = Path(__file__).resolve().parent  #  scripts directory
+ROOT_DIR = SCRIPTS_DIR.parent  # root directory
+
+
+def explore_data(train_df: pd.DataFrame, test_df: pd.DataFrame) -> None:
+    """Main function to check data loading."""
+
+    print("================= DATA CHECK =================")
+    print("Train DataFrame shape:", train_df.shape)
+    print("Test DataFrame shape:", test_df.shape)
+
+    print("================= COLUMNS =================")
+    print("\n--- Train DataFrame columns ---")
+    print(train_df.columns.tolist())
+    print("================= HEAD=================")
+    print("\n--- Train DataFrame head ---")
+    print(train_df.head())
+    print("\n--- Test DataFrame head ---")
+    print(test_df.head())
+    print("================= MISSING VALUES =================")
+    print("\n--- Missing values in Train DataFrame (top 10) ---")
+    print(train_df.isnull().sum().sort_values(ascending=False).head(10))
+
+
+if __name__ == "__main__":
+    train_df, test_df = load_train_test(ROOT_DIR)
+    X, y = make_X_y(train_df)
+    print("\n--- Features (X) shape ---")
+    print(X.shape)
+    print("\n--- Target (y) shape ---")
+    print(y.shape)
+    print("Sale price false in X columns:", "SalePrice" in X.columns)
+    print("\n--- Target (y) description ---")
+    print(y.describe())
