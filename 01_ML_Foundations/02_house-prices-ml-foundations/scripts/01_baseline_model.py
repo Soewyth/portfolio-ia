@@ -1,8 +1,8 @@
-from __future__ import annotations  # for future compatibility
+from __future__ import annotations
+from datetime import datetime  # for future compatibility
 from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_error
 from sklearn.model_selection import KFold
 from pathlib import Path
-import pandas as pd
 
 # ============== IMPORTS FROM house_prices_ml_foundations ==============
 # data imports
@@ -11,29 +11,43 @@ from house_prices_ml_foundations.features.build import make_features
 from house_prices_ml_foundations.data.split import make_train_valid_split
 from house_prices_ml_foundations.models.baseline import build_ridge_pipeline
 from house_prices_ml_foundations.evaluation.cv import cross_validate_model
+from house_prices_ml_foundations.evaluation.reporting import save_report_json
 
 # config imports
 from house_prices_ml_foundations.config import TEST_SIZE, RANDOM_STATE, N_SPLITS_CV
-from house_prices_ml_foundations.features.schema import (
-    NUMERICAL_FEATURES,
-    CATEGORICAL_FEATURES,
-    ORDINAL_FEATURES,
-)
-
-
-SCRIPTS_DIR = Path(__file__).resolve().parent  #  scripts directory
-ROOT_DIR = SCRIPTS_DIR.parent  # root directory
 
 
 def main():
     """Main function to run the baseline model."""
+    scripts_dir = Path(__file__).resolve().parent  #  scripts directory
+    root_dir = scripts_dir.parent  # root directory
+
+    # ============== CONFIG PATHS ==============
+
+    # Define output directories,
+    outputs_path = root_dir / "outputs"
+    figures_path = outputs_path / "figures"
+    reports_path = outputs_path / "reports"
+
+    # creating paths
+    outputs_path.mkdir(parents=True, exist_ok=True)
+    figures_path.mkdir(parents=True, exist_ok=True)
+    reports_path.mkdir(parents=True, exist_ok=True)
+
+    # run metadata
+    run_time = datetime.now()
+    run_time_str = run_time.strftime("%Y%m%d_%H%M%S")  # for file names
+
+    # Define report paths
+    json_path = reports_path / f"metrics_{run_time_str}.json"
+
     # Model parameters
     test_size = TEST_SIZE
     random_state = RANDOM_STATE
 
     # Load data
-    print(f"=== Loading data from : {ROOT_DIR}... ===")
-    train_df, test_df = load_train_test(ROOT_DIR)
+    print(f"=== Loading data from : {root_dir}... ===")
+    train_df, _ = load_train_test(root_dir)
     # Prepare features and target
     print("=== Preparing features and target ===")
     X, y = make_features(train_df)
@@ -76,6 +90,27 @@ def main():
     rmse_std = cv_results["root_mean_squared_error"]["std"]
 
     print(f"CV_RMSE_MEAN : {rmse_mean:.2f} | CV_RMSE_STD : {rmse_std:.2f}")
+
+    # === REPORT JSON ===
+    payload = {
+        "run_time": run_time_str,  # cohérence avec la consigne
+        "random_state": random_state,
+        "test_size": test_size,
+        "n_splits_cv": N_SPLITS_CV,  # cohérence
+        "features": list(X.columns),
+        "holdout": {
+            "mae": round(float(mae), 4),  # ← conversion + arrondi
+            "rmse": round(float(rmse), 4),
+            "r2": round(float(r2), 4),
+        },
+        "cv": {  # minuscule pour cohérence
+            "rmse_mean": round(float(rmse_mean), 4),
+            "rmse_std": round(float(rmse_std), 4),
+        },
+    }
+
+    save_report_json(json_path, payload)
+    print(f" === Report JSON saved at :\n {json_path} === ")
 
 
 if __name__ == "__main__":

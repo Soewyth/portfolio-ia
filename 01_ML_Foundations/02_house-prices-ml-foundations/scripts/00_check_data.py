@@ -5,7 +5,6 @@ import pandas as pd
 # ============== IMPORTS FROM house_prices_ml_foundations ==============
 # data imports
 from house_prices_ml_foundations.data.load import load_train_test
-from house_prices_ml_foundations.features.schema import FEATURES_COLS, TARGET_COL
 from house_prices_ml_foundations.features.build import make_features
 
 SCRIPTS_DIR = Path(__file__).resolve().parent  #  scripts directory
@@ -43,7 +42,6 @@ if __name__ == "__main__":
     print("\n--- Target (y) description ---")
     print(y.describe())
 
-
     print("\n--- List of all features ---")
     print(X.dtypes)
     print("\n--- List of object features ---")
@@ -51,5 +49,7 @@ if __name__ == "__main__":
     print(object_features)
 
     print("\n--- List of numbers features ---")
-    numbers_features = X.select_dtypes(include=["number", "float64", "int64"]).columns.tolist()
+    numbers_features = X.select_dtypes(
+        include=["number", "float64", "int64"]
+    ).columns.tolist()
     print(numbers_features)
