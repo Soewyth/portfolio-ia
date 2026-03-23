@@ -1,5 +1,5 @@
 from __future__ import annotations
-from datetime import datetime
+from datetime import datetime as dt
 
 # Define directories
 OUTPUTS_DIR = "outputs"

@@ -3,7 +3,6 @@ from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
-import pandas as pd
 from house_prices_ml_foundations.features.schema import (
     NUMERICAL_FEATURES,
     CATEGORICAL_FEATURES,

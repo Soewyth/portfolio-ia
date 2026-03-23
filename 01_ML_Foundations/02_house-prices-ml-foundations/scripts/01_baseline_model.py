@@ -1,4 +1,5 @@
 from __future__ import annotations  # for future compatibility
+from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_error
 from pathlib import Path
 import pandas as pd
 
@@ -8,6 +9,7 @@ from house_prices_ml_foundations.data.load import load_train_test
 from house_prices_ml_foundations.features.build import make_features
 from house_prices_ml_foundations.data.split import make_train_valid_split
 from house_prices_ml_foundations.features.preprocess import build_preprocessor
+from house_prices_ml_foundations.models.baseline import build_ridge_pipeline
 
 # config imports
 from house_prices_ml_foundations.config import TEST_SIZE, RANDOM_STATE
@@ -46,19 +48,19 @@ def main():
     print(
         f" y mean in train set : {y_train.mean():.3f} and in validation set : {y_valid.mean():.3f}"
     )
-    preprocessor = build_preprocessor()
-    X_train = preprocessor.fit_transform(X_train)
-    X_valid = preprocessor.transform(X_valid)
-    print(
-        f"Data shape after preprocessing -> X_train : {X_train.shape}, X_valid : {X_valid.shape}"
-    )
-    print(
-        f"Length of numerical features: {len(preprocessor['num'].get_feature_names_out())}, \n"
-        f"Length of categorical features: {len(preprocessor['cat'].get_feature_names_out())}, \n"
-        f"Length of ordinal features: {len(preprocessor['ord'].get_feature_names_out())}"
-    )
 
-    print("type ", type(X_train), type(X_valid))
+    pipe_ridge = build_ridge_pipeline(alpha=1.0)  # preprocess and model app
+    pipe_ridge.fit(X_train, y_train)  # fit datas
+
+    y_pred = pipe_ridge.predict(X_valid)  # predict to x_valid
+
+    # metrics
+    mae = mean_absolute_error(y_valid, y_pred)
+    rmse = root_mean_squared_error(y_valid, y_pred)
+    r2 = r2_score(y_valid, y_pred)
+
+    print("=== Metrics accuracy of Ridge model ===")
+    print(f"MAE: {mae:.2f} | RMSE: {rmse:.2f} | R²: {r2:.4f}\n")
 
 
 if __name__ == "__main__":
