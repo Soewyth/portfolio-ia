@@ -1,5 +1,6 @@
 from __future__ import annotations  # for future compatibility
 from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_error
+from sklearn.model_selection import KFold
 from pathlib import Path
 import pandas as pd
 
@@ -8,11 +9,11 @@ import pandas as pd
 from house_prices_ml_foundations.data.load import load_train_test
 from house_prices_ml_foundations.features.build import make_features
 from house_prices_ml_foundations.data.split import make_train_valid_split
-from house_prices_ml_foundations.features.preprocess import build_preprocessor
 from house_prices_ml_foundations.models.baseline import build_ridge_pipeline
+from house_prices_ml_foundations.evaluation.cv import cross_validate_model
 
 # config imports
-from house_prices_ml_foundations.config import TEST_SIZE, RANDOM_STATE
+from house_prices_ml_foundations.config import TEST_SIZE, RANDOM_STATE, N_SPLITS_CV
 from house_prices_ml_foundations.features.schema import (
     NUMERICAL_FEATURES,
     CATEGORICAL_FEATURES,
@@ -54,13 +55,27 @@ def main():
 
     y_pred = pipe_ridge.predict(X_valid)  # predict to x_valid
 
-    # metrics
+    # holdout metrics
     mae = mean_absolute_error(y_valid, y_pred)
     rmse = root_mean_squared_error(y_valid, y_pred)
     r2 = r2_score(y_valid, y_pred)
 
     print("=== Metrics accuracy of Ridge model ===")
     print(f"MAE: {mae:.2f} | RMSE: {rmse:.2f} | R²: {r2:.4f}\n")
+
+    # === Cross-VAlidation ===
+    print(" === Cross Validation === ")
+    cv = KFold(n_splits=N_SPLITS_CV, random_state=RANDOM_STATE, shuffle=True)
+    pipe_cv = build_ridge_pipeline(alpha=1.0)
+
+    cv_results = cross_validate_model(
+        pipe_cv, X, y, cv=cv, scoring="neg_root_mean_squared_error"
+    )
+
+    rmse_mean = cv_results["root_mean_squared_error"]["mean"]
+    rmse_std = cv_results["root_mean_squared_error"]["std"]
+
+    print(f"CV_RMSE_MEAN : {rmse_mean:.2f} | CV_RMSE_STD : {rmse_std:.2f}")
 
 
 if __name__ == "__main__":
