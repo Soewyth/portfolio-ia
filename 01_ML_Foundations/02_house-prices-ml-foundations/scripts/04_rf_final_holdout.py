@@ -70,8 +70,8 @@ def main() -> None:
 
     payload = {
         "run_time": run_time_str,
-        "random_state": RANDOM_STATE,
-        "test_size": TEST_SIZE,
+        "random_state": random_state,
+        "test_size": test_size,
         "tuning_source_file": str(latest_tuning_report),
         "best_params": best_params,
         "holdout": holdout_results,

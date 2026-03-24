@@ -14,13 +14,32 @@ def get_target_name() -> str:
     return TARGET_COL
 
 
-def make_features(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
-    """Given a DataFrame, return the features DataFrame X and target Series y."""
-    df = df.copy()  # avoid modifying 
-    df["house_age"] = df["YrSold"] - df["YearBuilt"]  # new feature: age of the house at the time of sale
-    df["garage_age"] = df["YrSold"] - df["GarageYrBlt"]  # new feature: age of the garage at the time of sale
-    df["remod_age"] = df["YrSold"] - df["YearRemodAdd"]  # new feature: age since last remodel at the time of sale
+def make_features(
+    df: pd.DataFrame, return_target: bool = True
+) -> tuple[pd.DataFrame, pd.Series] | pd.DataFrame:
+    """Build features from raw dataframe and optionally return target."""
+    df = df.copy()  # avoid modifying
+    df["house_age"] = df["YrSold"] - df["YearBuilt"]
+    df["garage_age"] = df["YrSold"] - df["GarageYrBlt"]
+    df["remod_age"] = df["YrSold"] - df["YearRemodAdd"]
+
     X = df[FEATURES_COLS]
+
+    if not return_target:
+        print(f"Features shape : {X.shape}")
+        return X
+
+    if TARGET_COL not in df.columns:
+        raise ValueError(
+            f"Target column '{TARGET_COL}' is missing. "
+            "Use return_target=False for inference/test data."
+        )
+
     y = df[TARGET_COL]
     print(f"Features shape : {X.shape} and target shape : {y.shape}")
     return X, y
+
+
+
+
+

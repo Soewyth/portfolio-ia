@@ -15,11 +15,6 @@ from house_prices_ml_foundations.evaluation.reporting import save_report_json
 from house_prices_ml_foundations.models.registry import make_model_registry
 
 
-# import for tuning and config
-from house_prices_ml_foundations.models.baseline import build_rf_pipeline
-from house_prices_ml_foundations.models.baseline import build_ridge_pipeline
-from house_prices_ml_foundations.models.baseline import build_lasso_pipeline
-
 
 # config imports
 from house_prices_ml_foundations.config import TEST_SIZE, RANDOM_STATE, N_SPLITS_CV

@@ -1,0 +1,14 @@
+{
+  "run_time": "20260324_204853",
+  "tuning_source_file": "/home/valentin/Documents/portfolio-ia/01_ML_Foundations/02_house-prices-ml-foundations/outputs/reports/tuning_rf_20260324_191258.json",
+  "best_params": {
+    "model__max_depth": null,
+    "model__max_features": 0.5,
+    "model__min_samples_leaf": 1,
+    "model__min_samples_split": 2,
+    "model__n_estimators": 300
+  },
+  "n_train_samples": 1460,
+  "n_test_samples": 1459,
+  "submission_file": "/home/valentin/Documents/portfolio-ia/01_ML_Foundations/02_house-prices-ml-foundations/outputs/submissions/submission_rf_20260324_204853.csv"
+}
