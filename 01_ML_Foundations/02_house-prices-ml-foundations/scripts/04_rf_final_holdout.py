@@ -7,7 +7,10 @@ from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_err
 from house_prices_ml_foundations.config import RANDOM_STATE, TEST_SIZE
 from house_prices_ml_foundations.data.split import make_train_valid_split
 from house_prices_ml_foundations.data.load import load_train_test
-from house_prices_ml_foundations.evaluation.reporting import save_report_json
+from house_prices_ml_foundations.evaluation.reporting import (
+    save_report_json,
+    save_audit_markdown_report,
+)
 from house_prices_ml_foundations.features.build import make_features
 from house_prices_ml_foundations.models.baseline import build_rf_pipeline
 from house_prices_ml_foundations.io.tuning import (
@@ -78,11 +81,13 @@ def main() -> None:
     }
 
     save_report_json(json_path, payload)
+    report_md_path = save_audit_markdown_report(reports_path=reports_path, root_dir=root_dir)
 
     print("=== RF final holdout ===")
     print(f"MAE={holdout_results['mae']:.2f} | RMSE={holdout_results['rmse']:.2f} | R2={holdout_results['r2']:.4f}")
     print(f"Tuning source: {latest_tuning_report.name}")
     print(f"JSON report saved: {json_path}")
+    print(f"Markdown report saved: {report_md_path}")
 
 
 if __name__ == "__main__":

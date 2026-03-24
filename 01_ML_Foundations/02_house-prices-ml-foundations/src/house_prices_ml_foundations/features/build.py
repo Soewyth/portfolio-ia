@@ -38,8 +38,3 @@ def make_features(
     y = df[TARGET_COL]
     print(f"Features shape : {X.shape} and target shape : {y.shape}")
     return X, y
-
-
-
-
-

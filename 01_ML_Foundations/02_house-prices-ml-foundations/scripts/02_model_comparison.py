@@ -11,7 +11,10 @@ from house_prices_ml_foundations.data.load import load_train_test
 from house_prices_ml_foundations.features.build import make_features
 from house_prices_ml_foundations.data.split import make_train_valid_split
 from house_prices_ml_foundations.evaluation.cv import cross_validate_model
-from house_prices_ml_foundations.evaluation.reporting import save_report_json
+from house_prices_ml_foundations.evaluation.reporting import (
+    save_report_json,
+    save_audit_markdown_report,
+)
 from house_prices_ml_foundations.models.registry import make_model_registry
 
 
@@ -111,7 +114,9 @@ def main() -> None:
     }
 
     save_report_json(json_path, payload)
+    report_md_path = save_audit_markdown_report(reports_path=reports_path, root_dir=root_dir)
     print(f" === Report JSON saved at :\n {json_path} === ")
+    print(f" === Report Markdown saved at :\n {report_md_path} === ")
 
 
 if __name__ == "__main__":
