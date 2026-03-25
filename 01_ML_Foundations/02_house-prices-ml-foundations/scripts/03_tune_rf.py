@@ -7,10 +7,7 @@ from sklearn.model_selection import GridSearchCV, KFold
 
 from house_prices_ml_foundations.config import N_SPLITS_CV, RANDOM_STATE
 from house_prices_ml_foundations.data.load import load_train_test
-from house_prices_ml_foundations.evaluation.reporting import (
-    save_report_json,
-    save_audit_markdown_report,
-)
+from house_prices_ml_foundations.evaluation.reporting import save_report_json
 from house_prices_ml_foundations.features.build import make_features
 from house_prices_ml_foundations.models.registry import make_model_registry
 
@@ -105,13 +102,11 @@ def main() -> None:
     }
 
     save_report_json(json_path, payload)
-    report_md_path = save_audit_markdown_report(reports_path=reports_path, root_dir=root_dir)
 
     print("=== RF tuning done ===")
     print(f"Best params: {search.best_params_}")
     print(f"Best CV RMSE: {best_rmse_cv:.4f}")
     print(f"JSON report saved: {json_path}")
-    print(f"Markdown report saved: {report_md_path}")
 
 
 if __name__ == "__main__":

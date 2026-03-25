@@ -8,11 +8,7 @@ import pandas as pd
 from house_prices_ml_foundations.data.load import load_train_test
 from house_prices_ml_foundations.evaluation.reporting import save_report_json
 from house_prices_ml_foundations.features.build import make_features
-from house_prices_ml_foundations.io.tuning import (
-    find_latest_tuning_report,
-    load_best_params_from_tuning_json,
-)
-from house_prices_ml_foundations.models.baseline import build_rf_pipeline
+from house_prices_ml_foundations.models.champion import build_champion_pipeline
 
 
 def main() -> None:
@@ -32,8 +28,6 @@ def main() -> None:
     submission_path = submissions_path / f"submission_rf_{run_time_str}.csv"
     json_path = reports_path / f"submission_rf_{run_time_str}.json"
 
-    latest_tuning_report = find_latest_tuning_report(reports_path)
-    best_params = load_best_params_from_tuning_json(latest_tuning_report)
 
     train_df, test_df = load_train_test(root_dir)
     X_train, y_train = make_features(train_df)
@@ -41,9 +35,8 @@ def main() -> None:
 
     if "Id" not in test_df.columns:
         raise ValueError("Column 'Id' missing in test dataset.")
-
-    rf_pipeline = build_rf_pipeline()
-    rf_pipeline.set_params(**best_params)
+    
+    rf_pipeline, champion_source = build_champion_pipeline(reports_path=reports_path)
     rf_pipeline.fit(X_train, y_train)
     y_pred = rf_pipeline.predict(X_test)
 
@@ -55,10 +48,11 @@ def main() -> None:
     )
     submission_df.to_csv(submission_path, index=False)
 
+    params = rf_pipeline.get_params()
     payload = {
         "run_time": run_time_str,
-        "tuning_source_file": str(latest_tuning_report),
-        "best_params": best_params,
+        "champion_source": champion_source,
+        "champion_params": {k: v for k, v in params.items() if k.startswith("model__")},  # Filter params to include only those related to the model
         "n_train_samples": int(len(train_df)),
         "n_test_samples": int(len(test_df)),
         "submission_file": str(submission_path),
@@ -66,7 +60,7 @@ def main() -> None:
     save_report_json(json_path, payload)
 
     print("=== RF submission generated ===")
-    print(f"Tuning source: {latest_tuning_report.name}")
+    print(f"Champion source: {champion_source}")
     print(f"Submission saved: {submission_path}")
     print(f"Run report saved: {json_path}")
 
