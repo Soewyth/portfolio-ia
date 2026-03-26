@@ -1,7 +1,7 @@
 from __future__ import annotations
 from sklearn.model_selection import train_test_split
 
-from house_prices_ml_foundations.config import TEST_SIZE, RANDOM_STATE
+from house_prices_ml_foundations.config.config import TEST_SIZE, RANDOM_STATE
 
 
 def make_train_valid_split(X, y, test_size=TEST_SIZE, random_state=RANDOM_STATE):

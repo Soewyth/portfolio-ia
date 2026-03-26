@@ -1,41 +1,27 @@
 from __future__ import annotations
 
-from datetime import datetime
-from pathlib import Path
-from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_error
 
-from house_prices_ml_foundations.config import RANDOM_STATE, TEST_SIZE
+from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_error
+from house_prices_ml_foundations.config.config import RANDOM_STATE, TEST_SIZE
 from house_prices_ml_foundations.data.split import make_train_valid_split
 from house_prices_ml_foundations.data.load import load_train_test
 from house_prices_ml_foundations.evaluation.reporting import save_report_json
 from house_prices_ml_foundations.features.build import make_features
 from house_prices_ml_foundations.models.champion import build_champion_pipeline
+from house_prices_ml_foundations.config.paths import get_project_root, get_paths
+from house_prices_ml_foundations.io.run_id import make_run_id
 
 
 def main() -> None:
     """Evaluate RF with best params from tuning on a fixed holdout split."""
-    scripts_dir = Path(__file__).resolve().parent
-    root_dir = scripts_dir.parent
-    # ============== CONFIG PATHS ==============
-
-    # Define output directories,
-    outputs_path = root_dir / "outputs"
-    figures_path = outputs_path / "figures"
-    reports_path = outputs_path / "reports"
-
-    # creating paths
-    outputs_path.mkdir(parents=True, exist_ok=True)
-    figures_path.mkdir(parents=True, exist_ok=True)
-    reports_path.mkdir(parents=True, exist_ok=True)
+    root_dir = get_project_root()
+    paths = get_paths(root_dir)
 
     random_state = RANDOM_STATE
     test_size = TEST_SIZE
 
-    # run metadata
-    run_time = datetime.now()
-    run_time_str = run_time.strftime("%Y%m%d_%H%M%S")  # for file names
-
-    json_path = reports_path / f"rf_final_holdout_{run_time_str}.json"
+    run_id = make_run_id("rf_final_holdout")
+    json_path = paths["reports"] / f"{run_id}.json"
 
     train_df, _ = load_train_test(root_dir)
     X, y = make_features(train_df)
@@ -44,7 +30,7 @@ def main() -> None:
         X, y, test_size=test_size, random_state=random_state
     )
 
-    rf_pipeline, champion_source = build_champion_pipeline(reports_path=reports_path)
+    rf_pipeline, champion_source = build_champion_pipeline(reports_path=paths["reports"])
 
     # Load best hyperparameters from the latest tuning report JSON
     print(f"Champion source: {champion_source}")
@@ -62,7 +48,7 @@ def main() -> None:
     }
     params = rf_pipeline.get_params()
     payload = {
-        "run_time": run_time_str,
+        "run_time": run_id,
         "random_state": random_state,
         "test_size": test_size,
         "champion_source": champion_source,

@@ -4,6 +4,8 @@ from __future__ import annotations
 OUTPUTS_DIR = "outputs"
 FIGURES_DIR = "figures"
 REPORTS_DIR = "reports"
+MODELS_DIR = "models"
+SUBMISSIONS_DIR = "submissions"
 
 # Constants
 RANDOM_STATE = 6

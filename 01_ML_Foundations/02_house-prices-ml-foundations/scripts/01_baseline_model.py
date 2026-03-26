@@ -1,45 +1,27 @@
 from __future__ import annotations
-from datetime import datetime  # for future compatibility
+
 from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_error
 from sklearn.model_selection import KFold
-from pathlib import Path
-
 # ============== IMPORTS FROM house_prices_ml_foundations ==============
-# data imports
 from house_prices_ml_foundations.data.load import load_train_test
 from house_prices_ml_foundations.features.build import make_features
 from house_prices_ml_foundations.data.split import make_train_valid_split
 from house_prices_ml_foundations.models.baseline import build_ridge_pipeline
 from house_prices_ml_foundations.evaluation.cv import cross_validate_model
 from house_prices_ml_foundations.evaluation.reporting import save_report_json
-
-# config imports
-from house_prices_ml_foundations.config import TEST_SIZE, RANDOM_STATE, N_SPLITS_CV
+from house_prices_ml_foundations.config.config import TEST_SIZE, RANDOM_STATE, N_SPLITS_CV
+from house_prices_ml_foundations.config.paths import get_project_root, get_paths
+from house_prices_ml_foundations.io.run_id import make_run_id
 
 
 def main():
     """Main function to run the baseline model."""
-    scripts_dir = Path(__file__).resolve().parent  #  scripts directory
-    root_dir = scripts_dir.parent  # root directory
-
-    # ============== CONFIG PATHS ==============
-
-    # Define output directories,
-    outputs_path = root_dir / "outputs"
-    figures_path = outputs_path / "figures"
-    reports_path = outputs_path / "reports"
-
-    # creating paths
-    outputs_path.mkdir(parents=True, exist_ok=True)
-    figures_path.mkdir(parents=True, exist_ok=True)
-    reports_path.mkdir(parents=True, exist_ok=True)
+    root_dir = get_project_root()
+    paths = get_paths(root_dir)
 
     # run metadata
-    run_time = datetime.now()
-    run_time_str = run_time.strftime("%Y%m%d_%H%M%S")  # for file names
-
-    # Define report paths
-    json_path = reports_path / f"metrics_{run_time_str}.json"
+    run_id = make_run_id("baseline")
+    json_path = paths["reports"] / f"metrics_{run_id}.json"
 
     # Model parameters
     test_size = TEST_SIZE
@@ -93,7 +75,7 @@ def main():
 
     # === REPORT JSON ===
     payload = {
-        "run_time": run_time_str,  # cohérence avec la consigne
+        "run_time": run_id,  # cohérence avec la consigne
         "random_state": random_state,
         "test_size": test_size,
         "n_splits_cv": N_SPLITS_CV,  # cohérence

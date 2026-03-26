@@ -1,33 +1,23 @@
 from __future__ import annotations
 
-from datetime import datetime
-from pathlib import Path
 
 import pandas as pd
-
 from house_prices_ml_foundations.data.load import load_train_test
 from house_prices_ml_foundations.evaluation.reporting import save_report_json
 from house_prices_ml_foundations.features.build import make_features
 from house_prices_ml_foundations.models.champion import build_champion_pipeline
+from house_prices_ml_foundations.config.paths import get_project_root, get_paths
+from house_prices_ml_foundations.io.run_id import make_run_id
 
 
 def main() -> None:
     """Train RF on full training data and generate Kaggle submission."""
-    scripts_dir = Path(__file__).resolve().parent
-    root_dir = scripts_dir.parent
+    root_dir = get_project_root()
+    paths = get_paths(root_dir)
 
-    outputs_path = root_dir / "outputs"
-    reports_path = outputs_path / "reports"
-    submissions_path = outputs_path / "submissions"
-
-    reports_path.mkdir(parents=True, exist_ok=True)
-    submissions_path.mkdir(parents=True, exist_ok=True)
-
-    run_time_str = datetime.now().strftime("%Y%m%d_%H%M%S")
-
-    submission_path = submissions_path / f"submission_rf_{run_time_str}.csv"
-    json_path = reports_path / f"submission_rf_{run_time_str}.json"
-
+    run_id = make_run_id("submission_rf_")
+    submission_path = paths["submissions"] / f"{run_id}.csv"
+    json_path = paths["reports"] / f"{run_id}.json"
 
     train_df, test_df = load_train_test(root_dir)
     X_train, y_train = make_features(train_df)
@@ -36,7 +26,7 @@ def main() -> None:
     if "Id" not in test_df.columns:
         raise ValueError("Column 'Id' missing in test dataset.")
     
-    rf_pipeline, champion_source = build_champion_pipeline(reports_path=reports_path)
+    rf_pipeline, champion_source = build_champion_pipeline(reports_path=paths["reports"])
     rf_pipeline.fit(X_train, y_train)
     y_pred = rf_pipeline.predict(X_test)
 
@@ -50,7 +40,7 @@ def main() -> None:
 
     params = rf_pipeline.get_params()
     payload = {
-        "run_time": run_time_str,
+        "run_time": run_id,
         "champion_source": champion_source,
         "champion_params": {k: v for k, v in params.items() if k.startswith("model__")},  # Filter params to include only those related to the model
         "n_train_samples": int(len(train_df)),

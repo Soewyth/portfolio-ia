@@ -1,14 +1,10 @@
 from __future__ import annotations  # for future compatibility
-from pathlib import Path
-import pandas as pd
 
+import pandas as pd
 # ============== IMPORTS FROM house_prices_ml_foundations ==============
-# data imports
 from house_prices_ml_foundations.data.load import load_train_test
 from house_prices_ml_foundations.features.build import make_features
-
-SCRIPTS_DIR = Path(__file__).resolve().parent  #  scripts directory
-ROOT_DIR = SCRIPTS_DIR.parent  # root directory
+from house_prices_ml_foundations.config.paths import get_project_root, get_paths
 
 
 def explore_data(train_df: pd.DataFrame, test_df: pd.DataFrame) -> None:
@@ -32,7 +28,9 @@ def explore_data(train_df: pd.DataFrame, test_df: pd.DataFrame) -> None:
 
 
 if __name__ == "__main__":
-    train_df, test_df = load_train_test(ROOT_DIR)
+    root_dir = get_project_root()
+    paths = get_paths(root_dir)
+    train_df, test_df = load_train_test(root_dir)
     X, y = make_features(train_df)
     print("\n--- Features (X) shape ---")
     print(X.shape)

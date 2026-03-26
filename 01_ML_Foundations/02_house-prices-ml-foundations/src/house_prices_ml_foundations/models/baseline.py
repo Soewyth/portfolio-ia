@@ -3,7 +3,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import Ridge, Lasso
 from house_prices_ml_foundations.features.preprocess import build_preprocessor
-from house_prices_ml_foundations.config import (
+from house_prices_ml_foundations.config.config import (
     RANDOM_STATE,
     N_ESTIMATORS_RF,
     MAX_ITER_LASSO,

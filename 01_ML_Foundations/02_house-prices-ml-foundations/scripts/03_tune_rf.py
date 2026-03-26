@@ -1,40 +1,25 @@
 from __future__ import annotations
 
-from datetime import datetime
-from pathlib import Path
 
 from sklearn.model_selection import GridSearchCV, KFold
-
-from house_prices_ml_foundations.config import N_SPLITS_CV, RANDOM_STATE
+from house_prices_ml_foundations.config.config import N_SPLITS_CV, RANDOM_STATE
 from house_prices_ml_foundations.data.load import load_train_test
 from house_prices_ml_foundations.evaluation.reporting import save_report_json
 from house_prices_ml_foundations.features.build import make_features
 from house_prices_ml_foundations.models.registry import make_model_registry
+from house_prices_ml_foundations.config.paths import get_project_root, get_paths
+from house_prices_ml_foundations.io.run_id import make_run_id
 
 
 
 
 def main() -> None:
     """Tune RandomForest hyperparameters with GridSearchCV."""
-    scripts_dir = Path(__file__).resolve().parent
-    root_dir = scripts_dir.parent
-    # ============== CONFIG PATHS ==============
+    root_dir = get_project_root()
+    paths = get_paths(root_dir)
 
-    # Define output directories,
-    outputs_path = root_dir / "outputs"
-    figures_path = outputs_path / "figures"
-    reports_path = outputs_path / "reports"
-
-    # creating paths
-    outputs_path.mkdir(parents=True, exist_ok=True)
-    figures_path.mkdir(parents=True, exist_ok=True)
-    reports_path.mkdir(parents=True, exist_ok=True)
-
-    # run metadata
-    run_time = datetime.now()
-    run_time_str = run_time.strftime("%Y%m%d_%H%M%S")  # for file names
-
-    json_path = reports_path / f"tuning_rf_{run_time_str}.json"
+    run_time_str = make_run_id("tuning_rf")
+    json_path = paths["reports"] / f"{run_time_str}.json"
 
     train_df, _ = load_train_test(root_dir)
     X, y = make_features(train_df)
@@ -45,8 +30,8 @@ def main() -> None:
     cv = KFold(n_splits=N_SPLITS_CV, shuffle=True, random_state=RANDOM_STATE)
 
     param_grid = {
-        "model__n_estimators": [50, 100, 300, 500],
-        "model__max_depth": [None, 10, 25, 50],
+        "model__n_estimators": [100, 300, 500],
+        "model__max_depth": [None, 10, 30, 50],
         "model__min_samples_split": [2, 10, 20],
         "model__min_samples_leaf": [1, 5, 10],
         "model__max_features": ["sqrt", 0.5, 0.75, 1.0],
