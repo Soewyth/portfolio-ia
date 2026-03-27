@@ -10,7 +10,7 @@ def plot_residuals_hist(error_df, out_path, run_id):
     plt.xlabel("Residual")
     plt.ylabel("Frequency")
     plt.grid()
-    file_path = out_path / f"residuals_hist{run_id}.png"
+    file_path = out_path / f"residuals_hist_{run_id}.png"
     plt.savefig(file_path)
     print(f"Residuals histogram saved to: {file_path}")
     plt.close()
