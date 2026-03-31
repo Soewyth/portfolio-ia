@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from house_prices_ml_foundations.evaluation.plots import (
     plot_abs_error_vs_ytrue,
+    plot_correlation_heatmap,
     plot_residuals_hist,
     plot_ytrue_vs_ypred,
 )
@@ -28,9 +29,12 @@ def main() -> None:
     # Load and execute plots functions
     error_df = pd.read_csv(latest_csv_file)
 
+    print(f"Check debug : error_df : \n {error_df}\n\n" )
+
     plot_abs_error_vs_ytrue(error_df=error_df, out_path=path_figures, run_id=run_id)
     plot_residuals_hist(error_df=error_df, out_path=path_figures, run_id=run_id)
     plot_ytrue_vs_ypred(error_df=error_df, out_path=path_figures, run_id=run_id)
+    plot_correlation_heatmap(df=error_df, out_path=path_figures, run_id=run_id, title="Correlation Heatmap of Error Analysis DataFrame")
 
 
 if __name__ == "__main__":

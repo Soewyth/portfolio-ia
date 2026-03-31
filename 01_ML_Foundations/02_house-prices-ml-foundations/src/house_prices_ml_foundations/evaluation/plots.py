@@ -56,3 +56,24 @@ def plot_abs_error_vs_ytrue(
     print(f"Absolute Error vs True Values plot saved to: {file_path}")
     plt.close()
     return file_path
+
+def plot_correlation_heatmap(df, out_path, run_id, title="Correlation Heatmap "):
+    plt.figure(figsize=(8,6))
+    numeric_df = df.select_dtypes(include="number")
+
+    if numeric_df.empty:
+        raise ValueError("No numeric columns found in the DataFrame for correlation heatmap.")
+
+    corr = numeric_df.corr()
+    # if row_id drop it from the correlation matrix
+    if "row_id" in corr.columns:
+        corr = corr.drop("row_id", axis=0).drop("row_id", axis=1) # both axis
+    title = title.replace(" ", "_").lower()
+    sns.heatmap(data=corr, annot=True, cmap='coolwarm', fmt=".2f")
+    plt.title(title)
+    plt.tight_layout() # Adjust layout to prevent clipping of labels
+    file_path = out_path / f"{title}_{run_id}.png"
+    plt.savefig(file_path)
+    print(f"{title} saved to: {file_path}")
+    plt.close()
+    return file_path
