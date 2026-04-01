@@ -20,7 +20,7 @@ def main() -> None:
 
     # run metadata
     run_id = make_run_id("model_comparison")
-    json_path = paths["reports"] / f"model_comparison_report_{run_id}.json"
+    json_path = paths["reports"] / f"report_{run_id}.json"
 
     # Model parameters
     test_size = TEST_SIZE

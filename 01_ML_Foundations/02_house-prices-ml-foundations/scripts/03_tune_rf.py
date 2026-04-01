@@ -18,8 +18,8 @@ def main() -> None:
     root_dir = get_project_root()
     paths = get_paths(root_dir)
 
-    run_time_str = make_run_id("tuning_rf")
-    json_path = paths["reports"] / f"{run_time_str}.json"
+    run_id = make_run_id("tuning_rf_")
+    json_path = paths["reports"] / f"{run_id}.json"
 
     train_df, _ = load_train_test(root_dir)
     X, y = make_features(train_df)
@@ -75,7 +75,7 @@ def main() -> None:
         )
 
     payload = {
-        "run_time": run_time_str,
+        "run_time": run_id,
         "random_state": RANDOM_STATE,
         "n_splits_cv": N_SPLITS_CV,
         "scoring": "neg_root_mean_squared_error",

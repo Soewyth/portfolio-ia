@@ -60,9 +60,9 @@ def generate_report_md(reports_path: Path, report_path: Path | None = None) -> P
     tuning_source_path = None
     # Determine which tuning report source to reference in the report (prefer RF final holdout, then submission)
     if rf_final:
-        tuning_source_path = rf_final.get("tuning_source_file")
+        tuning_source_path = rf_final.get("champion_source")
     if tuning_source_path is None and submission:
-        tuning_source_path = submission.get("tuning_source_file")
+        tuning_source_path = submission.get("champion_source")
 
     tuning = tuning_latest
     tuning_source_used = str(tuning_latest_path) if tuning_latest_path else "N/A"
@@ -78,6 +78,10 @@ def generate_report_md(reports_path: Path, report_path: Path | None = None) -> P
     lines: list[str] = []
     lines.append("# REPORT - House Prices")
     lines.append("")
+    lines.append("## What is the problem?")
+    lines.append("Predict the sale price of houses in Ames, Iowa, using 78 explanatory variables (Kaggle House Prices dataset). This is a supervised regression problem where the goal is to build a model that generalizes well to unseen data.")
+    lines.append("")
+    
     lines.append("## Dataset")
     if submission:
         lines.append(f"- Train rows: `{submission.get('n_train_samples', 'N/A')}`")
@@ -165,7 +169,7 @@ def generate_report_md(reports_path: Path, report_path: Path | None = None) -> P
     if rf_final:
         hold = rf_final.get("holdout", {})
         lines.append(
-            f"- tuning_source_file: `{rf_final.get('tuning_source_file', 'N/A')}`"
+            f"- champion_source: `{rf_final.get('champion_source', 'N/A')}`"
         )
         lines.append(f"- mae: `{fmt(hold.get('mae'))}`")
         lines.append(f"- rmse: `{fmt(hold.get('rmse'))}`")
@@ -235,9 +239,15 @@ def generate_report_md(reports_path: Path, report_path: Path | None = None) -> P
         lines.append(
             f"- Large errors threshold: n(abs_error > 100k) = `{n_large_errors}`."
         )
+        lines.append("")
+        lines.append(
+            "- **Most of the largest errors concern very expensive houses, which are likely under-represented in the dataset.**"
+        )
+        lines.append("")
         lines.append(
             "- Main risk: extreme high-price houses show higher relative errors. Related figures:"
         )
+        
         lines.append(f"  - `{fig1}`")
         lines.append(f"  - `{fig2}`")
         lines.append(f"  - `{fig3}`")
