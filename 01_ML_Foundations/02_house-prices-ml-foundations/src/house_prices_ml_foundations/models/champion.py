@@ -1,11 +1,11 @@
 from __future__ import annotations  # for future compatibility
+
 from pathlib import Path
 
 from sklearn.pipeline import Pipeline
-from house_prices_ml_foundations.models.baseline import build_rf_pipeline
+
 from house_prices_ml_foundations.io.tuning import find_latest_tuning_report, load_best_params_from_tuning_json
-
-
+from house_prices_ml_foundations.models.baseline import build_rf_pipeline
 
 
 def build_champion_pipeline(reports_path: Path | None = None) -> tuple[Pipeline, str]:

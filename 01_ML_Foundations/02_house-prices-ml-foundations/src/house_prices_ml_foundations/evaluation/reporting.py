@@ -1,7 +1,7 @@
 from __future__ import annotations  # for future compatibility
-from pathlib import Path  # for handling file paths
-from datetime import datetime
+
 import json
+from pathlib import Path  # for handling file paths
 
 
 def save_report_json(path: Path, payload: dict) -> None:

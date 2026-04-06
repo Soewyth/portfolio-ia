@@ -1,13 +1,15 @@
 from __future__ import annotations  # for future compatibility
+
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import Lasso, Ridge
 from sklearn.pipeline import Pipeline
-from sklearn.linear_model import Ridge, Lasso
-from house_prices_ml_foundations.features.preprocess import build_preprocessor
+
 from house_prices_ml_foundations.config.config import (
-    RANDOM_STATE,
-    N_ESTIMATORS_RF,
     MAX_ITER_LASSO,
+    N_ESTIMATORS_RF,
+    RANDOM_STATE,
 )
+from house_prices_ml_foundations.features.preprocess import build_preprocessor
 
 
 def build_ridge_pipeline(alpha: float = 1.0) -> Pipeline:

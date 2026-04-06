@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import pandas as pd
+
 from house_prices_ml_foundations.config.paths import get_paths, get_project_root
 from house_prices_ml_foundations.data.load import load_train_test
 from house_prices_ml_foundations.features.build import make_features
 from house_prices_ml_foundations.io.model_artifacts import load_model
 from house_prices_ml_foundations.io.run_id import make_run_id
-import pandas as pd
 
 
 def main() -> None:
@@ -44,7 +45,7 @@ def main() -> None:
 
     submission_df.to_csv(submission_path, index=False)
 
-    print(f" === First rows of submission === \n")
+    print(" === First rows of submission === \n")
     print(f" {submission_df.head(3)} \n")
     print(" === Submission generated from model inference === \n ")
     print(f"Model loaded from: {model_path}\n")

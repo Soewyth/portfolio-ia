@@ -1,11 +1,13 @@
 from __future__ import annotations  # for future compatibility
-from sklearn.pipeline import Pipeline
+
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
+
 from house_prices_ml_foundations.features.schema import (
-    NUMERICAL_FEATURES,
     CATEGORICAL_FEATURES,
+    NUMERICAL_FEATURES,
     ORDINAL_FEATURES,
 )
 

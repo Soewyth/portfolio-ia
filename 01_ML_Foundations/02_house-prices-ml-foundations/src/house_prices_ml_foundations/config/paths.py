@@ -1,12 +1,14 @@
 from __future__ import annotations
+
 from pathlib import Path
+
 from house_prices_ml_foundations.config.config import (
-    OUTPUTS_DIR,
     FIGURES_DIR,
+    MLRUNS_DIR,
+    MODELS_DIR,
+    OUTPUTS_DIR,
     REPORTS_DIR,
     SUBMISSIONS_DIR,
-    MODELS_DIR,
-    MLRUNS_DIR,
 )
 
 
@@ -41,13 +43,15 @@ def get_paths(root_dir: Path) -> dict:
     return paths
 
 
-
 def latest_file(directory: Path, pattern: str = "*") -> Path:
     """Get the latest file in a directory matching a pattern."""
     files = list(directory.glob(pattern))
     if not files:
-        raise FileNotFoundError("Files not found at directory {directory} matching the pattern {pattern} ")
-    latest = max(files, key= lambda f: f.stat().st_mtime) # stat for last time modified file
+        raise FileNotFoundError(
+            "Files not found at directory {directory} matching the pattern {pattern} "
+        )
+    latest = max(
+        files, key=lambda f: f.stat().st_mtime
+    )  # stat for last time modified file
 
     return latest
-     

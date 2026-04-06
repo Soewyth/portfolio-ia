@@ -1,6 +1,7 @@
 from __future__ import annotations  # for future compatibility
-from pathlib import Path
+
 import json
+from pathlib import Path
 
 from house_prices_ml_foundations.models.baseline import build_rf_pipeline
 

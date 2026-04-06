@@ -1,16 +1,18 @@
 from __future__ import annotations
+
 import mlflow
 from sklearn.metrics import mean_absolute_error, r2_score, root_mean_squared_error
+
 from house_prices_ml_foundations.config.config import (
     RANDOM_STATE,
     TEST_SIZE,
 )
 from house_prices_ml_foundations.config.mlflow_config import MLFLOW_TRACKING_URI
 from house_prices_ml_foundations.config.paths import get_paths, get_project_root, latest_file
-from house_prices_ml_foundations.data.split import make_train_valid_split
-from house_prices_ml_foundations.io.run_id import make_run_id
 from house_prices_ml_foundations.data.load import load_train_test
+from house_prices_ml_foundations.data.split import make_train_valid_split
 from house_prices_ml_foundations.features.build import make_features
+from house_prices_ml_foundations.io.run_id import make_run_id
 from house_prices_ml_foundations.models.champion import build_champion_pipeline
 
 

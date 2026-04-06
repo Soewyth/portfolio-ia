@@ -1,5 +1,6 @@
-from joblib import dump, load
 from pathlib import Path
+
+from joblib import dump, load
 
 # Deux fonctions simples :
 # save_model(model, path: Path) -> None

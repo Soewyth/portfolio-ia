@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-
+from house_prices_ml_foundations.config.paths import get_paths, get_project_root
 from house_prices_ml_foundations.evaluation.report_md import generate_report_md
-from house_prices_ml_foundations.config.paths import get_project_root, get_paths
 
 
 def main() -> None:

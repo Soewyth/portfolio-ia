@@ -1,17 +1,21 @@
 from __future__ import annotations
+
 from sklearn.base import clone
-from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_error
+from sklearn.metrics import mean_absolute_error, r2_score, root_mean_squared_error
 from sklearn.model_selection import KFold
+
+from house_prices_ml_foundations.config.config import N_SPLITS_CV, RANDOM_STATE, TEST_SIZE
+from house_prices_ml_foundations.config.paths import get_paths, get_project_root
+
 # ============== IMPORTS FROM house_prices_ml_foundations ==============
 from house_prices_ml_foundations.data.load import load_train_test
-from house_prices_ml_foundations.features.build import make_features
 from house_prices_ml_foundations.data.split import make_train_valid_split
 from house_prices_ml_foundations.evaluation.cv import cross_validate_model
 from house_prices_ml_foundations.evaluation.reporting import save_report_json
-from house_prices_ml_foundations.models.registry import make_model_registry
-from house_prices_ml_foundations.config.config import TEST_SIZE, RANDOM_STATE, N_SPLITS_CV
-from house_prices_ml_foundations.config.paths import get_project_root, get_paths
+from house_prices_ml_foundations.features.build import make_features
 from house_prices_ml_foundations.io.run_id import make_run_id
+from house_prices_ml_foundations.models.registry import make_model_registry
+
 
 def main() -> None:
     """Compare Ridge, Lasso and RandomForest with holdout + CV."""
@@ -40,7 +44,8 @@ def main() -> None:
     )
 
     print(
-        f"Data shape after split -> X_train : {X_train.shape}, X_valid : {X_valid.shape}, y_train : {y_train.shape}, y_valid : {y_valid.shape}"
+        f"Data shape after split -> X_train : {X_train.shape}, X_valid : {X_valid.shape}, "
+        f"y_train : {y_train.shape}, y_valid : {y_valid.shape}"
     )
     print(
         f" y mean in train set : {y_train.mean():.3f} and in validation set : {y_valid.mean():.3f}"
@@ -66,7 +71,8 @@ def main() -> None:
         # Cross-validation evaluation
 
         cv_results = cross_validate_model(
-            model=clone(pipe), X=X, y=y, cv=cv, scoring="neg_root_mean_squared_error" # clone for dont fit the model again on the whole data
+            model=clone(pipe), X=X, y=y, cv=cv, scoring="neg_root_mean_squared_error" 
+            # clone for dont fit the model again on the whole data
         )
         rmse_mean = cv_results["root_mean_squared_error"]["mean"]
         rmse_std = cv_results["root_mean_squared_error"]["std"]

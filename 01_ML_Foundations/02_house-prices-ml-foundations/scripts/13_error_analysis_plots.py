@@ -1,14 +1,15 @@
 from __future__ import annotations
 
+import pandas as pd
+
+from house_prices_ml_foundations.config.paths import get_paths, get_project_root
 from house_prices_ml_foundations.evaluation.plots import (
     plot_abs_error_vs_ytrue,
     plot_correlation_heatmap,
     plot_residuals_hist,
     plot_ytrue_vs_ypred,
 )
-from house_prices_ml_foundations.config.paths import get_project_root, get_paths
 from house_prices_ml_foundations.io.run_id import make_run_id
-import pandas as pd
 
 
 def main() -> None:

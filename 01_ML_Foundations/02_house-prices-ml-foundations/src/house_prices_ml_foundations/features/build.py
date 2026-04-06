@@ -1,4 +1,5 @@
 from __future__ import annotations  # for future compatibility
+
 import pandas as pd
 
 from house_prices_ml_foundations.features.schema import FEATURES_COLS, TARGET_COL

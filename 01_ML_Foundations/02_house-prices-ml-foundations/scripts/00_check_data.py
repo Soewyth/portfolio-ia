@@ -1,10 +1,12 @@
 from __future__ import annotations  # for future compatibility
 
 import pandas as pd
+
+from house_prices_ml_foundations.config.paths import get_paths, get_project_root
+
 # ============== IMPORTS FROM house_prices_ml_foundations ==============
 from house_prices_ml_foundations.data.load import load_train_test
 from house_prices_ml_foundations.features.build import make_features
-from house_prices_ml_foundations.config.paths import get_project_root, get_paths
 
 
 def explore_data(train_df: pd.DataFrame, test_df: pd.DataFrame) -> None:
@@ -47,7 +49,5 @@ if __name__ == "__main__":
     print(object_features)
 
     print("\n--- List of numbers features ---")
-    numbers_features = X.select_dtypes(
-        include=["number", "float64", "int64"]
-    ).columns.tolist()
+    numbers_features = X.select_dtypes(include=["number", "float64", "int64"]).columns.tolist()
     print(numbers_features)

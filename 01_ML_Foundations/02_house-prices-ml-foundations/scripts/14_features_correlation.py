@@ -1,11 +1,12 @@
 from __future__ import annotations
+
 import pandas as pd
 
+from house_prices_ml_foundations.config.paths import get_paths, get_project_root
 from house_prices_ml_foundations.data.load import load_train_test
 from house_prices_ml_foundations.evaluation.plots import (
     plot_correlation_heatmap,
 )
-from house_prices_ml_foundations.config.paths import get_project_root, get_paths
 from house_prices_ml_foundations.features.build import get_target_name, make_features
 from house_prices_ml_foundations.features.preprocess import build_preprocessor
 from house_prices_ml_foundations.io.run_id import make_run_id

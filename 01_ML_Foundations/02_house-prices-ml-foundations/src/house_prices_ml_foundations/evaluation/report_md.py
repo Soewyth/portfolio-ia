@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-from pathlib import Path
-from datetime import datetime
 import json
+from datetime import datetime
+from pathlib import Path
+
+import pandas as pd
 
 from house_prices_ml_foundations.io.tuning import find_latest_tuning_report
-import pandas as pd
 
 
 def generate_report_md(reports_path: Path, report_path: Path | None = None) -> Path:
@@ -79,7 +80,8 @@ def generate_report_md(reports_path: Path, report_path: Path | None = None) -> P
     lines.append("# REPORT - House Prices")
     lines.append("")
     lines.append("## What is the problem?")
-    lines.append("Predict the sale price of houses in Ames, Iowa, using 78 explanatory variables (Kaggle House Prices dataset). This is a supervised regression problem where the goal is to build a model that generalizes well to unseen data.")
+    lines.append("Predict the sale price of houses in Ames, Iowa, using 78 explanatory variables (Kaggle House Prices dataset)." \
+                 " This is a supervised regression problem where the goal is to build a model that generalizes well to unseen data.")
     lines.append("")
     
     lines.append("## Dataset")
@@ -134,7 +136,8 @@ def generate_report_md(reports_path: Path, report_path: Path | None = None) -> P
             hold = model_data.get("holdout", {})
             cv = model_data.get("cv", {})
             lines.append(
-                f"| {model_name} | {fmt(hold.get('rmse'))} | {fmt(hold.get('mae'))} | {fmt(hold.get('r2'))} | {fmt(cv.get('rmse_mean'))} | {fmt(cv.get('rmse_std'))} |"
+                f"| {model_name} | {fmt(hold.get('rmse'))} | {fmt(hold.get('mae'))} | {fmt(hold.get('r2'))} | "
+                f"{fmt(cv.get('rmse_mean'))} | {fmt(cv.get('rmse_std'))} |"
             )
     elif baseline_metrics:
         lines.append(
@@ -186,7 +189,9 @@ def generate_report_md(reports_path: Path, report_path: Path | None = None) -> P
             "- Why: best CV RMSE from tuning, lower baseline RF CV RMSE than linear baselines, and final holdout metrics validated."
         )
         lines.append(
-            f"- Evidence: tuning best_rmse_cv= `{fmt(tuning.get('best_rmse_cv'))}`, baseline rf cv_rmse_std=`{fmt(rf_cv.get('rmse_std'))}`, final_holdout_rmse=`{fmt(rf_final.get('holdout', {}).get('rmse'))}`."
+            f"- Evidence: tuning best_rmse_cv= `{fmt(tuning.get('best_rmse_cv'))}`, "
+            f"baseline rf cv_rmse_std=`{fmt(rf_cv.get('rmse_std'))}`, "
+            f"final_holdout_rmse=`{fmt(rf_final.get('holdout', {}).get('rmse'))}`."
         )
     else:
         lines.append(

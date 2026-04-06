@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import os
 
 from house_prices_ml_foundations.config.paths import get_paths, get_project_root

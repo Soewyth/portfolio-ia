@@ -1,15 +1,15 @@
 from __future__ import annotations
 
+from sklearn.metrics import mean_absolute_error, r2_score, root_mean_squared_error
 
-from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_error
 from house_prices_ml_foundations.config.config import RANDOM_STATE, TEST_SIZE
-from house_prices_ml_foundations.data.split import make_train_valid_split
+from house_prices_ml_foundations.config.paths import get_paths, get_project_root
 from house_prices_ml_foundations.data.load import load_train_test
+from house_prices_ml_foundations.data.split import make_train_valid_split
 from house_prices_ml_foundations.evaluation.reporting import save_report_json
 from house_prices_ml_foundations.features.build import make_features
-from house_prices_ml_foundations.models.champion import build_champion_pipeline
-from house_prices_ml_foundations.config.paths import get_project_root, get_paths
 from house_prices_ml_foundations.io.run_id import make_run_id
+from house_prices_ml_foundations.models.champion import build_champion_pipeline
 
 
 def main() -> None:

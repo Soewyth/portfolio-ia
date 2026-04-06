@@ -1,6 +1,7 @@
-from house_prices_ml_foundations.config.config import RANDOM_STATE
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+from house_prices_ml_foundations.config.config import RANDOM_STATE
 
 
 def plot_residuals_hist(error_df, out_path, run_id):
