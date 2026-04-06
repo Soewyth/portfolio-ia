@@ -37,16 +37,10 @@ def main():
     X, y = make_features(train_df)
     # Split data into training and validation sets
     print("=== Splitting data into training and validation sets ===")
-    X_train, X_valid, y_train, y_valid = make_train_valid_split(
-        X, y, test_size, random_state
-    )
+    X_train, X_valid, y_train, y_valid = make_train_valid_split(X, y, test_size, random_state)
 
-    print(
-        f"Data shape after split -> X_train : {X_train.shape}, X_valid : {X_valid.shape}, y_train : {y_train.shape}, y_valid : {y_valid.shape}"
-    )
-    print(
-        f" y mean in train set : {y_train.mean():.3f} and in validation set : {y_valid.mean():.3f}"
-    )
+    print(f"Data shape after split -> X_train : {X_train.shape}, X_valid : {X_valid.shape}, y_train : {y_train.shape}, y_valid : {y_valid.shape}")
+    print(f" y mean in train set : {y_train.mean():.3f} and in validation set : {y_valid.mean():.3f}")
 
     pipe_ridge = build_ridge_pipeline(alpha=1.0)  # preprocess and model app
     pipe_ridge.fit(X_train, y_train)  # fit datas
@@ -66,9 +60,7 @@ def main():
     cv = KFold(n_splits=N_SPLITS_CV, random_state=RANDOM_STATE, shuffle=True)
     pipe_cv = build_ridge_pipeline(alpha=1.0)
 
-    cv_results = cross_validate_model(
-        pipe_cv, X, y, cv=cv, scoring="neg_root_mean_squared_error"
-    )
+    cv_results = cross_validate_model(pipe_cv, X, y, cv=cv, scoring="neg_root_mean_squared_error")
 
     rmse_mean = cv_results["root_mean_squared_error"]["mean"]
     rmse_std = cv_results["root_mean_squared_error"]["std"]

@@ -39,17 +39,10 @@ def main() -> None:
     X, y = make_features(train_df)
     # Split data into training and validation sets
     print("=== Splitting data into training and validation sets ===")
-    X_train, X_valid, y_train, y_valid = make_train_valid_split(
-        X, y, test_size, random_state
-    )
+    X_train, X_valid, y_train, y_valid = make_train_valid_split(X, y, test_size, random_state)
 
-    print(
-        f"Data shape after split -> X_train : {X_train.shape}, X_valid : {X_valid.shape}, "
-        f"y_train : {y_train.shape}, y_valid : {y_valid.shape}"
-    )
-    print(
-        f" y mean in train set : {y_train.mean():.3f} and in validation set : {y_valid.mean():.3f}"
-    )
+    print(f"Data shape after split -> X_train : {X_train.shape}, X_valid : {X_valid.shape}, y_train : {y_train.shape}, y_valid : {y_valid.shape}")
+    print(f" y mean in train set : {y_train.mean():.3f} and in validation set : {y_valid.mean():.3f}")
 
     # === Cross-Validation + models comparisons ===
     print(" === Cross Validation === ")
@@ -67,29 +60,30 @@ def main() -> None:
         mae = mean_absolute_error(y_valid, y_pred)
         rmse = root_mean_squared_error(y_valid, y_pred)
         r2 = r2_score(y_valid, y_pred)
-        
+
         # Cross-validation evaluation
 
         cv_results = cross_validate_model(
-            model=clone(pipe), X=X, y=y, cv=cv, scoring="neg_root_mean_squared_error" 
+            model=clone(pipe),
+            X=X,
+            y=y,
+            cv=cv,
+            scoring="neg_root_mean_squared_error",
             # clone for dont fit the model again on the whole data
         )
         rmse_mean = cv_results["root_mean_squared_error"]["mean"]
         rmse_std = cv_results["root_mean_squared_error"]["std"]
 
         results[name] = {
-        "holdout": {"mae": round(float(mae), 4), "rmse": round(float(rmse), 4), "r2": round(float(r2), 4)},
-        "cv": {"rmse_mean": round(float(rmse_mean), 4), "rmse_std": round(float(rmse_std), 4)},
+            "holdout": {"mae": round(float(mae), 4), "rmse": round(float(rmse), 4), "r2": round(float(r2), 4)},
+            "cv": {"rmse_mean": round(float(rmse_mean), 4), "rmse_std": round(float(rmse_std), 4)},
         }
 
-        print(
-        f"{name}: MAE={mae:.2f} | RMSE={rmse:.2f} | R2={r2:.4f} | "
-        f"CV_RMSE={rmse_mean:.2f} +/- {rmse_std:.2f}" 
-     )
+        print(f"{name}: MAE={mae:.2f} | RMSE={rmse:.2f} | R2={r2:.4f} | CV_RMSE={rmse_mean:.2f} +/- {rmse_std:.2f}")
 
     # === REPORT JSON ===
     payload = {
-        "run_time": run_id,  
+        "run_time": run_id,
         "random_state": random_state,
         "test_size": test_size,
         "n_splits_cv": n_splits_cv,

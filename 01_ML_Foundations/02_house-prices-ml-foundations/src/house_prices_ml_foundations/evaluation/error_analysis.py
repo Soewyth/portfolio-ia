@@ -71,8 +71,6 @@ def build_error_analysis_summary(error_analysis_df: pd.DataFrame) -> dict:
         "abs_error_p90": float(error_analysis_df["abs_error"].quantile(0.90)),
         "abs_error_std": float(error_analysis_df["abs_error"].std()),
         "pct_error_mean": float(error_analysis_df["pct_error"].mean(skipna=True)),
-        "top_10_errors": error_analysis_df.sort_values("abs_error", ascending=False)
-        .head(10)
-        .to_dict(orient="records"),
+        "top_10_errors": error_analysis_df.sort_values("abs_error", ascending=False).head(10).to_dict(orient="records"),
     }
     return summary

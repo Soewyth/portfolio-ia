@@ -18,9 +18,6 @@ def make_train_valid_split(X, y, test_size=TEST_SIZE, random_state=RANDOM_STATE)
         tuple: A tuple containing the training and testing sets (X_train, X_test, y_train, y_test).
     """
 
-    X_train, X_valid, y_train, y_valid = train_test_split(
-        X, y, test_size=test_size, random_state=random_state
-    )
+    X_train, X_valid, y_train, y_valid = train_test_split(X, y, test_size=test_size, random_state=random_state)
 
     return X_train, X_valid, y_train, y_valid
-    

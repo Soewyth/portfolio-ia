@@ -30,7 +30,7 @@ def main() -> None:
     # Load and execute plots functions
     error_df = pd.read_csv(latest_csv_file)
 
-    print(f"Check debug : error_df : \n {error_df}\n\n" )
+    print(f"Check debug : error_df : \n {error_df}\n\n")
 
     plot_abs_error_vs_ytrue(error_df=error_df, out_path=path_figures, run_id=run_id)
     plot_residuals_hist(error_df=error_df, out_path=path_figures, run_id=run_id)

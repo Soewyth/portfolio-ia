@@ -29,6 +29,6 @@ def load_model(path: Path) -> object:
     """
     if not path.exists():
         raise FileNotFoundError("The file doesn't exist")
-    
+
     print(" File loaded from : ", path)
     return load(path)

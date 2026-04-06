@@ -11,10 +11,15 @@ from house_prices_ml_foundations.config.config import (
     SUBMISSIONS_DIR,
 )
 
-
 def get_project_root() -> Path:
-    """Get the root directory of the project based on the location of this file."""
-    return Path(__file__).resolve().parent.parent.parent.parent  # up to project root
+    # Walk up from this file until we find pyproject.toml (project root marker)
+    current = Path(__file__).resolve()
+    for parent in current.parents:
+        if (parent / "pyproject.toml").exists():
+            return parent
+    raise FileNotFoundError(
+        "Could not find project root: no pyproject.toml found in any parent directory."
+    )
 
 
 def get_paths(root_dir: Path) -> dict:

@@ -28,9 +28,7 @@ def build_ridge_pipeline(alpha: float = 1.0) -> Pipeline:
 
 
 # Lasso Pipe and model
-def build_lasso_pipeline(
-    alpha: float = 1.0, max_iter: int = MAX_ITER_LASSO
-) -> Pipeline:
+def build_lasso_pipeline(alpha: float = 1.0, max_iter: int = MAX_ITER_LASSO) -> Pipeline:
     """Build a Lasso regression pipeline."""
     # encoding
     pre = build_preprocessor()
@@ -51,7 +49,5 @@ def build_rf_pipeline(
     pre = build_preprocessor()
 
     # model rf
-    rf = RandomForestRegressor(
-        n_estimators=n_estimators, random_state=random_state, n_jobs=n_jobs
-    )
+    rf = RandomForestRegressor(n_estimators=n_estimators, random_state=random_state, n_jobs=n_jobs)
     return Pipeline(steps=[("preprocess", pre), ("model", rf)])

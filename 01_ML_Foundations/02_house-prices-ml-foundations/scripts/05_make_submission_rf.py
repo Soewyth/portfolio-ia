@@ -25,7 +25,7 @@ def main() -> None:
 
     if "Id" not in test_df.columns:
         raise ValueError("Column 'Id' missing in test dataset.")
-    
+
     rf_pipeline, champion_source = build_champion_pipeline(reports_path=paths["reports"])
     rf_pipeline.fit(X_train, y_train)
     y_pred = rf_pipeline.predict(X_test)

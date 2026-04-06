@@ -35,14 +35,10 @@ def main() -> None:
 
     rmse = np.sqrt(((y_valid - y_pred) ** 2).mean())
     mae = abs(y_valid - y_pred).mean()
-    error_analysis_df = build_error_analysis_frame(
-        X_valid=X_valid, y_valid=y_valid, y_pred=y_pred, raw_df=train_df
-    )
+    error_analysis_df = build_error_analysis_frame(X_valid=X_valid, y_valid=y_valid, y_pred=y_pred, raw_df=train_df)
     error_analysis_csv_path = paths["reports"] / f"error_analysis_{run_id}.csv"
     error_analysis_json_path = paths["reports"] / f"error_analysis_{run_id}.json"
-    error_analysis_json_summary_path = (
-        paths["reports"] / f"error_analysis_{run_id}_summary.json"
-    )
+    error_analysis_json_summary_path = paths["reports"] / f"error_analysis_{run_id}_summary.json"
 
     error_analysis_sum = build_error_analysis_summary(error_analysis_df)
     save_report_json(error_analysis_json_summary_path, error_analysis_sum)
@@ -67,20 +63,10 @@ def main() -> None:
     print(f"Error analysis CSV saved to: {error_analysis_csv_path}")
 
     print("\nTop 10 Neighborhoods by mean absolute error:")
-    top_10_neighborhoods = (
-        error_analysis_df.groupby("Neighborhood")["abs_error"]
-        .mean()
-        .sort_values(ascending=False)
-        .head(10)
-    )
+    top_10_neighborhoods = error_analysis_df.groupby("Neighborhood")["abs_error"].mean().sort_values(ascending=False).head(10)
     print(top_10_neighborhoods)
     print("\nTop 10 OverallQual by mean absolute error:")
-    top_10_overallqual = (
-        error_analysis_df.groupby("OverallQual")["abs_error"]
-        .mean()
-        .sort_values(ascending=False)
-        .head(10)
-    )
+    top_10_overallqual = error_analysis_df.groupby("OverallQual")["abs_error"].mean().sort_values(ascending=False).head(10)
     print(top_10_overallqual)
 
     print("\nMAE by bins of GrLivArea: (10 bins)")
@@ -89,13 +75,9 @@ def main() -> None:
 
     print("\n % of large errors (>100k) per Neighborhood:")
     large_errors_by_neighborhood = (
-        error_analysis_df.groupby("Neighborhood")["abs_error"]
-        .apply(lambda x: (x > 100000).mean())
-        .sort_values(ascending=False)
+        error_analysis_df.groupby("Neighborhood")["abs_error"].apply(lambda x: (x > 100000).mean()).sort_values(ascending=False)
     )
-    large_errors_by_neighborhood = large_errors_by_neighborhood[
-        large_errors_by_neighborhood > 0
-    ]
+    large_errors_by_neighborhood = large_errors_by_neighborhood[large_errors_by_neighborhood > 0]
     print(large_errors_by_neighborhood)
 
 

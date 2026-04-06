@@ -9,7 +9,6 @@ def main() -> None:
     root_dir = get_project_root()
     paths = get_paths(root_dir)
 
-
     rf_pipe, champion_source = build_champion_pipeline(paths["reports"])
     params = rf_pipe.get_params()
 

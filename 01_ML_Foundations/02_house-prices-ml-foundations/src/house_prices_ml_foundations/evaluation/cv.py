@@ -4,9 +4,7 @@ import numpy as np
 from sklearn.model_selection import cross_validate
 
 
-def cross_validate_model(
-    model: object, X: object, y: object, cv: object, scoring: list[str] | str
-) -> dict[str, dict[str, float]]:
+def cross_validate_model(model: object, X: object, y: object, cv: object, scoring: list[str] | str) -> dict[str, dict[str, float]]:
     """
     Perform cross-validation on the given model.
     Args:
@@ -18,14 +16,10 @@ def cross_validate_model(
     Returns:
         Dict [str, dict[str, float]]: A dictionary containing the mean and standard deviation of the scores.
     """
-    scoring = (
-        [scoring] if isinstance(scoring, str) else scoring
-    )  # for uniform process ,if str -> list
+    scoring = [scoring] if isinstance(scoring, str) else scoring  # for uniform process ,if str -> list
 
     # from sklearn
-    cv_results = cross_validate(
-        model, X, y, cv=cv, scoring=scoring, return_train_score=False
-    )
+    cv_results = cross_validate(model, X, y, cv=cv, scoring=scoring, return_train_score=False)
 
     results = {}
 

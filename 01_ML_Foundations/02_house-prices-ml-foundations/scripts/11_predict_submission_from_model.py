@@ -29,9 +29,7 @@ def main() -> None:
     y_pred = model.predict(X_test)
 
     if not len(test_df) == len(y_pred):
-        raise ValueError(
-            f"Length of test data ({len(test_df)}) does not match length of predictions ({len(y_pred)})."
-        )
+        raise ValueError(f"Length of test data ({len(test_df)}) does not match length of predictions ({len(y_pred)}).")
 
     submission_df = pd.DataFrame(
         {

@@ -26,9 +26,7 @@ def main() -> None:
     train_df, _ = load_train_test(root_dir)
     X, y = make_features(train_df)
 
-    X_train, X_valid, y_train, y_valid = make_train_valid_split(
-        X, y, test_size=test_size, random_state=random_state
-    )
+    X_train, X_valid, y_train, y_valid = make_train_valid_split(X, y, test_size=test_size, random_state=random_state)
 
     rf_pipeline, champion_source = build_champion_pipeline(reports_path=paths["reports"])
 
@@ -52,18 +50,14 @@ def main() -> None:
         "random_state": random_state,
         "test_size": test_size,
         "champion_source": champion_source,
-        "champion_params": {
-            k: v for k, v in params.items() if k.startswith("model__")
-        },  # Filter params to include only those related to the model
+        "champion_params": {k: v for k, v in params.items() if k.startswith("model__")},  # Filter params to include only those related to the model
         "holdout": holdout_results,
     }
 
     save_report_json(json_path, payload)
 
     print("=== RF final holdout ===")
-    print(
-        f"MAE={holdout_results['mae']:.2f} | RMSE={holdout_results['rmse']:.2f} | R2={holdout_results['r2']:.4f}"
-    )
+    print(f"MAE={holdout_results['mae']:.2f} | RMSE={holdout_results['rmse']:.2f} | R2={holdout_results['r2']:.4f}")
     print(f"Tuning source: {champion_source}")
     print(f"JSON report saved: {json_path}")
 

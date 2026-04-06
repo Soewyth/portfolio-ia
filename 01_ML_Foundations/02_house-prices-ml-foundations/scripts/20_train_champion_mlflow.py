@@ -33,9 +33,7 @@ def main() -> None:
     # Load and make features
     train_df, _ = load_train_test(root_dir=root_dir)
     X, y = make_features(df=train_df, return_target=True)
-    X_train, X_valid, y_train, y_valid = make_train_valid_split(
-        X=X, y=y, test_size=TEST_SIZE, random_state=RANDOM_STATE
-    )
+    X_train, X_valid, y_train, y_valid = make_train_valid_split(X=X, y=y, test_size=TEST_SIZE, random_state=RANDOM_STATE)
     # Build RF pipeline and fit
     pipe, champion_source = build_champion_pipeline(paths["reports"])
     pipe.fit(X_train, y_train)
@@ -50,7 +48,6 @@ def main() -> None:
 
     # === Logs ===
     with mlflow.start_run(run_name=run_id) as run:
-
         # metadata
         mlflow.log_param("run_id", run_id)
         mlflow.log_param("champion_source", champion_source)
@@ -58,13 +55,9 @@ def main() -> None:
         mlflow.log_param("test_size", TEST_SIZE)
 
         # Params
-        model_params = {
-            k: v for k, v in pipe.get_params().items() if k.startswith("model__")
-        }
+        model_params = {k: v for k, v in pipe.get_params().items() if k.startswith("model__")}
         for key, value in model_params.items():
             mlflow.log_param(key, value)
-
-
 
         # Metrics
         mlflow.log_metric("holdout_mae", float(holdout_mae))
@@ -77,13 +70,13 @@ def main() -> None:
             mlflow.log_artifact(str(latest_report))
         else:
             print("[MLflow] No report artifact found to log.")
-            
+
         latest_residuals_hist = latest_file(figure_path, "residuals_hist*.png")
         if latest_residuals_hist is not None and latest_residuals_hist.exists():
             mlflow.log_artifact(str(latest_residuals_hist))
         else:
             print("[MLflow] No residuals histogram artifact found to log.")
-        
+
         latest_ytrue_vs_ypred = latest_file(figure_path, "ytrue_vs_ypred*.png")
         if latest_ytrue_vs_ypred is not None and latest_ytrue_vs_ypred.exists():
             mlflow.log_artifact(str(latest_ytrue_vs_ypred))
@@ -112,7 +105,6 @@ def main() -> None:
         else:
             print("[MLflow] champion.joblib not found locally, skipped.")
 
-
         print("\n=== TRAIN + LOG MLFLOW DONE ===")
         print(f"run_name      : {run_id}")
         print(f"mlflow_run_id : {run.info.run_id}")
@@ -120,6 +112,7 @@ def main() -> None:
         print(f"holdout_mae   : {holdout_mae:.6f}")
         print(f"holdout_rmse  : {holdout_rmse:.6f}")
         print(f"holdout_r2    : {holdout_r2:.6f}")
+
 
 if __name__ == "__main__":
     main()

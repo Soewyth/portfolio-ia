@@ -18,9 +18,7 @@ def plot_residuals_hist(error_df, out_path, run_id):
     return file_path
 
 
-def plot_ytrue_vs_ypred(
-    error_df, out_path, run_id, sample_n=500, random_state=RANDOM_STATE
-):
+def plot_ytrue_vs_ypred(error_df, out_path, run_id, sample_n=500, random_state=RANDOM_STATE):
     sample_n = min(sample_n, len(error_df))
     sample_df = error_df.sample(n=sample_n, random_state=random_state)
     plt.figure(figsize=(8, 6))
@@ -41,9 +39,7 @@ def plot_ytrue_vs_ypred(
     return file_path
 
 
-def plot_abs_error_vs_ytrue(
-    error_df, out_path, run_id, sample_n=500, random_state=RANDOM_STATE
-):
+def plot_abs_error_vs_ytrue(error_df, out_path, run_id, sample_n=500, random_state=RANDOM_STATE):
     sample_n = min(sample_n, len(error_df))
     sample_df = error_df.sample(n=sample_n, random_state=random_state)
     plt.figure(figsize=(8, 6))
@@ -58,8 +54,9 @@ def plot_abs_error_vs_ytrue(
     plt.close()
     return file_path
 
+
 def plot_correlation_heatmap(df, out_path, run_id, title="Correlation Heatmap "):
-    plt.figure(figsize=(8,6))
+    plt.figure(figsize=(8, 6))
     numeric_df = df.select_dtypes(include="number")
 
     if numeric_df.empty:
@@ -68,11 +65,11 @@ def plot_correlation_heatmap(df, out_path, run_id, title="Correlation Heatmap ")
     corr = numeric_df.corr()
     # if row_id drop it from the correlation matrix
     if "row_id" in corr.columns:
-        corr = corr.drop("row_id", axis=0).drop("row_id", axis=1) # both axis
+        corr = corr.drop("row_id", axis=0).drop("row_id", axis=1)  # both axis
     title = title.replace(" ", "_").lower()
-    sns.heatmap(data=corr, annot=True, cmap='coolwarm', fmt=".2f")
+    sns.heatmap(data=corr, annot=True, cmap="coolwarm", fmt=".2f")
     plt.title(title)
-    plt.tight_layout() # Adjust layout to prevent clipping of labels
+    plt.tight_layout()  # Adjust layout to prevent clipping of labels
     file_path = out_path / f"{title}_{run_id}.png"
     plt.savefig(file_path)
     print(f"{title} saved to: {file_path}")

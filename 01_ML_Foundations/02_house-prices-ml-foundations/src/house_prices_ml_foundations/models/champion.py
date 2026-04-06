@@ -19,23 +19,16 @@ def build_champion_pipeline(reports_path: Path | None = None) -> tuple[Pipeline,
     """
     rf_pipe = build_rf_pipeline()
 
-
     if reports_path is None:
         return rf_pipe, "default"
-    
+
     try:
         latest_tuning_report = find_latest_tuning_report(reports_path)
         best_params = load_best_params_from_tuning_json(latest_tuning_report)
         rf_pipe.set_params(**best_params)
-    
+
         return rf_pipe, "tuned"
-    
-    
-    except (FileNotFoundError, ValueError, OSError): # Fallback 
+
+    except (FileNotFoundError, ValueError, OSError):  # Fallback
         print("No valid tuning artifacts found. Using default RF parameters.")
         return rf_pipe, "default"
-
-
-       
-
-    

@@ -15,9 +15,7 @@ def get_target_name() -> str:
     return TARGET_COL
 
 
-def make_features(
-    df: pd.DataFrame, return_target: bool = True
-) -> tuple[pd.DataFrame, pd.Series] | pd.DataFrame:
+def make_features(df: pd.DataFrame, return_target: bool = True) -> tuple[pd.DataFrame, pd.Series] | pd.DataFrame:
     """Build features from raw dataframe and optionally return target."""
     df = df.copy()  # avoid modifying
     df["house_age"] = df["YrSold"] - df["YearBuilt"]
@@ -31,10 +29,7 @@ def make_features(
         return X
 
     if TARGET_COL not in df.columns:
-        raise ValueError(
-            f"Target column '{TARGET_COL}' is missing. "
-            "Use return_target=False for inference/test data."
-        )
+        raise ValueError(f"Target column '{TARGET_COL}' is missing. Use return_target=False for inference/test data.")
 
     y = df[TARGET_COL]
     print(f"Features shape : {X.shape} and target shape : {y.shape}")
