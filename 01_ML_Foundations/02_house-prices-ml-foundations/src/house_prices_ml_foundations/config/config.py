@@ -6,6 +6,7 @@ FIGURES_DIR = "figures"
 REPORTS_DIR = "reports"
 MODELS_DIR = "models"
 SUBMISSIONS_DIR = "submissions"
+MLRUNS_DIR = "mlruns"
 
 # Constants
 RANDOM_STATE = 6

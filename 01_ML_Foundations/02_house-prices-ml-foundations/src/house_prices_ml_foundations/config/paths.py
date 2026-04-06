@@ -6,6 +6,7 @@ from house_prices_ml_foundations.config.config import (
     REPORTS_DIR,
     SUBMISSIONS_DIR,
     MODELS_DIR,
+    MLRUNS_DIR,
 )
 
 
@@ -23,6 +24,7 @@ def get_paths(root_dir: Path) -> dict:
         "models": root_dir / OUTPUTS_DIR / MODELS_DIR,
         "submissions": root_dir / OUTPUTS_DIR / SUBMISSIONS_DIR,
         "figures": root_dir / OUTPUTS_DIR / FIGURES_DIR,
+        "mlruns": root_dir / OUTPUTS_DIR / MLRUNS_DIR,
     }
     # Create directories if they don't exist but skip datasets/raw which should be manually managed
     for name, path in paths.items():
@@ -37,3 +39,15 @@ def get_paths(root_dir: Path) -> dict:
         )
 
     return paths
+
+
+
+def latest_file(directory: Path, pattern: str = "*") -> Path:
+    """Get the latest file in a directory matching a pattern."""
+    files = list(directory.glob(pattern))
+    if not files:
+        raise FileNotFoundError("Files not found at directory {directory} matching the pattern {pattern} ")
+    latest = max(files, key= lambda f: f.stat().st_mtime) # stat for last time modified file
+
+    return latest
+     
