@@ -1,0 +1,27 @@
+{
+  "run_time": "submission_rf__20260406_203842",
+  "champion_source": "tuned",
+  "champion_params": {
+    "model__bootstrap": true,
+    "model__ccp_alpha": 0.0,
+    "model__criterion": "squared_error",
+    "model__max_depth": 30,
+    "model__max_features": 0.5,
+    "model__max_leaf_nodes": null,
+    "model__max_samples": null,
+    "model__min_impurity_decrease": 0.0,
+    "model__min_samples_leaf": 1,
+    "model__min_samples_split": 2,
+    "model__min_weight_fraction_leaf": 0.0,
+    "model__monotonic_cst": null,
+    "model__n_estimators": 100,
+    "model__n_jobs": -1,
+    "model__oob_score": false,
+    "model__random_state": 6,
+    "model__verbose": 0,
+    "model__warm_start": false
+  },
+  "n_train_samples": 1460,
+  "n_test_samples": 1459,
+  "submission_file": "/home/valentin/Documents/portfolio-ia/01_ML_Foundations/02_house-prices-ml-foundations/outputs/submissions/submission_rf__20260406_203842.csv"
+}

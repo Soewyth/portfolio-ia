@@ -1,0 +1,7 @@
+{
+  "run_time": "rf_pipe_20260406_204054",
+  "champion_source": "tuned",
+  "random_state": 6,
+  "test_size": 0.2,
+  "error_analysis_csv": "/home/valentin/Documents/portfolio-ia/01_ML_Foundations/02_house-prices-ml-foundations/outputs/reports/error_analysis_rf_pipe_20260406_204054.csv"
+}

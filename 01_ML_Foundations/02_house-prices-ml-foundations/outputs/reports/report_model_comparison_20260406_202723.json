@@ -1,0 +1,121 @@
+{
+  "run_time": "model_comparison_20260406_202723",
+  "random_state": 6,
+  "test_size": 0.2,
+  "n_splits_cv": 5,
+  "features": [
+    "MSSubClass",
+    "MSZoning",
+    "LotFrontage",
+    "LotArea",
+    "Street",
+    "Alley",
+    "LotShape",
+    "LandContour",
+    "Utilities",
+    "LotConfig",
+    "LandSlope",
+    "Neighborhood",
+    "Condition1",
+    "Condition2",
+    "BldgType",
+    "HouseStyle",
+    "OverallQual",
+    "OverallCond",
+    "RoofStyle",
+    "RoofMatl",
+    "Exterior1st",
+    "Exterior2nd",
+    "MasVnrType",
+    "MasVnrArea",
+    "ExterQual",
+    "ExterCond",
+    "Foundation",
+    "BsmtQual",
+    "BsmtCond",
+    "BsmtExposure",
+    "BsmtFinType1",
+    "BsmtFinSF1",
+    "BsmtFinType2",
+    "BsmtFinSF2",
+    "BsmtUnfSF",
+    "TotalBsmtSF",
+    "Heating",
+    "HeatingQC",
+    "CentralAir",
+    "Electrical",
+    "1stFlrSF",
+    "2ndFlrSF",
+    "LowQualFinSF",
+    "GrLivArea",
+    "BsmtFullBath",
+    "BsmtHalfBath",
+    "FullBath",
+    "HalfBath",
+    "BedroomAbvGr",
+    "KitchenAbvGr",
+    "KitchenQual",
+    "TotRmsAbvGrd",
+    "Functional",
+    "Fireplaces",
+    "FireplaceQu",
+    "GarageType",
+    "GarageFinish",
+    "GarageCars",
+    "GarageArea",
+    "GarageQual",
+    "GarageCond",
+    "PavedDrive",
+    "WoodDeckSF",
+    "OpenPorchSF",
+    "EnclosedPorch",
+    "3SsnPorch",
+    "ScreenPorch",
+    "PoolArea",
+    "PoolQC",
+    "Fence",
+    "MiscFeature",
+    "MiscVal",
+    "MoSold",
+    "SaleType",
+    "SaleCondition",
+    "house_age",
+    "garage_age",
+    "remod_age"
+  ],
+  "models": {
+    "ridge": {
+      "holdout": {
+        "mae": 19388.5718,
+        "rmse": 34673.1279,
+        "r2": 0.8422
+      },
+      "cv": {
+        "rmse_mean": 33920.2649,
+        "rmse_std": 6986.2024
+      }
+    },
+    "lasso": {
+      "holdout": {
+        "mae": 19343.9202,
+        "rmse": 35080.7757,
+        "r2": 0.8385
+      },
+      "cv": {
+        "rmse_mean": 35809.0948,
+        "rmse_std": 10310.3155
+      }
+    },
+    "rf": {
+      "holdout": {
+        "mae": 19159.3556,
+        "rmse": 36051.7662,
+        "r2": 0.8294
+      },
+      "cv": {
+        "rmse_mean": 29488.0728,
+        "rmse_std": 3961.85
+      }
+    }
+  }
+}

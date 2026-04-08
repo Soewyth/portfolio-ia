@@ -11,15 +11,14 @@ from house_prices_ml_foundations.config.config import (
     SUBMISSIONS_DIR,
 )
 
+
 def get_project_root() -> Path:
     # Walk up from this file until we find pyproject.toml (project root marker)
     current = Path(__file__).resolve()
     for parent in current.parents:
         if (parent / "pyproject.toml").exists():
             return parent
-    raise FileNotFoundError(
-        "Could not find project root: no pyproject.toml found in any parent directory."
-    )
+    raise FileNotFoundError("Could not find project root: no pyproject.toml found in any parent directory.")
 
 
 def get_paths(root_dir: Path) -> dict:
@@ -52,11 +51,7 @@ def latest_file(directory: Path, pattern: str = "*") -> Path:
     """Get the latest file in a directory matching a pattern."""
     files = list(directory.glob(pattern))
     if not files:
-        raise FileNotFoundError(
-            "Files not found at directory {directory} matching the pattern {pattern} "
-        )
-    latest = max(
-        files, key=lambda f: f.stat().st_mtime
-    )  # stat for last time modified file
+        raise FileNotFoundError("Files not found at directory {directory} matching the pattern {pattern} ")
+    latest = max(files, key=lambda f: f.stat().st_mtime)  # stat for last time modified file
 
     return latest

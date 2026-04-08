@@ -1,0 +1,133 @@
+{
+  "abs_error_max": 336238.8,
+  "abs_error_mean": 18735.98239726027,
+  "abs_error_median": 10875.335,
+  "abs_error_p99": 135407.2875999993,
+  "n_large_errors": 6,
+  "abs_error_p95": 52900.9045,
+  "abs_error_p90": 38858.96200000002,
+  "abs_error_std": 29613.211511892707,
+  "pct_error_mean": 0.10652899712508566,
+  "top_10_errors": [
+    {
+      "row_id": 523,
+      "y_true": 184750,
+      "y_pred": 520988.8,
+      "residual": -336238.8,
+      "abs_error": 336238.8,
+      "pct_error": 1.8199664411366712,
+      "OverallQual": 10,
+      "GrLivArea": 4676,
+      "Neighborhood": "Edwards",
+      "YearBuilt": 2007
+    },
+    {
+      "row_id": 691,
+      "y_true": 755000,
+      "y_pred": 572998.14,
+      "residual": 182001.86,
+      "abs_error": 182001.86,
+      "pct_error": 0.24106206622516554,
+      "OverallQual": 10,
+      "GrLivArea": 4316,
+      "Neighborhood": "NoRidge",
+      "YearBuilt": 1994
+    },
+    {
+      "row_id": 1324,
+      "y_true": 147000,
+      "y_pred": 308137.21,
+      "residual": -161137.21000000002,
+      "abs_error": 161137.21000000002,
+      "pct_error": 1.0961714965986395,
+      "OverallQual": 8,
+      "GrLivArea": 1795,
+      "Neighborhood": "Somerst",
+      "YearBuilt": 2006
+    },
+    {
+      "row_id": 769,
+      "y_true": 538000,
+      "y_pred": 405137.43,
+      "residual": 132862.57,
+      "abs_error": 132862.57,
+      "pct_error": 0.2469564498141264,
+      "OverallQual": 8,
+      "GrLivArea": 3279,
+      "Neighborhood": "StoneBr",
+      "YearBuilt": 2003
+    },
+    {
+      "row_id": 313,
+      "y_true": 375000,
+      "y_pred": 244001.93,
+      "residual": 130998.07,
+      "abs_error": 130998.07,
+      "pct_error": 0.3493281866666667,
+      "OverallQual": 7,
+      "GrLivArea": 2036,
+      "Neighborhood": "Timber",
+      "YearBuilt": 1965
+    },
+    {
+      "row_id": 581,
+      "y_true": 253293,
+      "y_pred": 375771.79,
+      "residual": -122478.78999999998,
+      "abs_error": 122478.78999999998,
+      "pct_error": 0.4835458934909373,
+      "OverallQual": 8,
+      "GrLivArea": 2042,
+      "Neighborhood": "NridgHt",
+      "YearBuilt": 2008
+    },
+    {
+      "row_id": 1349,
+      "y_true": 122000,
+      "y_pred": 221672.32,
+      "residual": -99672.32,
+      "abs_error": 99672.32,
+      "pct_error": 0.8169862295081968,
+      "OverallQual": 8,
+      "GrLivArea": 2358,
+      "Neighborhood": "OldTown",
+      "YearBuilt": 1872
+    },
+    {
+      "row_id": 1046,
+      "y_true": 556581,
+      "y_pred": 464450.96,
+      "residual": 92130.03999999998,
+      "abs_error": 92130.03999999998,
+      "pct_error": 0.16552853942193496,
+      "OverallQual": 9,
+      "GrLivArea": 2868,
+      "Neighborhood": "StoneBr",
+      "YearBuilt": 2005
+    },
+    {
+      "row_id": 1359,
+      "y_true": 315000,
+      "y_pred": 386371.82,
+      "residual": -71371.82,
+      "abs_error": 71371.82,
+      "pct_error": 0.22657720634920636,
+      "OverallQual": 9,
+      "GrLivArea": 1980,
+      "Neighborhood": "NridgHt",
+      "YearBuilt": 2004
+    },
+    {
+      "row_id": 231,
+      "y_true": 403000,
+      "y_pred": 332612.67,
+      "residual": 70387.33000000002,
+      "abs_error": 70387.33000000002,
+      "pct_error": 0.17465838709677423,
+      "OverallQual": 8,
+      "GrLivArea": 2794,
+      "Neighborhood": "NoRidge",
+      "YearBuilt": 1995
+    }
+  ]
+}
